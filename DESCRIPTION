@@ -1,5 +1,5 @@
 Package: hud.extract
-Title: Extracts R-friendly Specifications from HUD Specification PDF
+Title: Extracts R-friendly Specifications from the HUD Specification PDF
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Stephen",
