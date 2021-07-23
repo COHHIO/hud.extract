@@ -1,0 +1,23 @@
+Package: hud.extract
+Title: Extracts R-friendly Specifications from HUD Specification PDF
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Stephen",
+           family = "Holsenbeck",
+           role = c("aut", "cre"),
+           email = "sholsen@alumni.emory.edu")
+Description: Create useful R objects for working with HUD Export data
+Imports:
+  hud.export,
+  pdftools,
+  purrr,
+  readr,
+  rlang,
+  stringr,
+  tibble
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+    license
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
