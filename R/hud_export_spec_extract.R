@@ -31,7 +31,7 @@ fill_missed_exportid <- function(.data) {
   .data
 }
 
-
+#' @title Create a pdf data list from the HUD 2022 HMIS Specs
 #' @inherit pdftools::pdf_data
 #' @export
 hud_pdf_data <- function(pdf = "https://hudhdx.info/Resources/Vendors/HMIS_CSV_Specifications_FY2022_v1.0.pdf", font_info = TRUE, opw = "", upw = "") {
@@ -42,6 +42,7 @@ hud_pdf_data <- function(pdf = "https://hudhdx.info/Resources/Vendors/HMIS_CSV_S
 #' @description Extract the specifications for each of the HUD Export Items from the HUD Specifications PDF
 #' @param hud_pdf_data \code{tibble} output from `hud_pdf_data`
 #' @return \code({list}) of tibbles with specifications from tables in the PDF
+#' @export
 
 hud_export_specs <- function(hud_pdf_data) {
   hud_specs_tbl <- dplyr::bind_rows(hud_pdf_data, .id = "Page")
@@ -152,6 +153,7 @@ hud_export_specs <- function(hud_pdf_data) {
   hud_items_specs <- purrr::map(hud_items_specs, concat_rows)
 
 }
+
 hash <- tibble::tribble(~ typ, ~ hud, ~ fun, ~ chr,
                   "integer", "I", readr::parse_integer, "i",
                   "numeric", "I", readr::parse_number, "n",
@@ -179,7 +181,6 @@ hash <- tibble::tribble(~ typ, ~ hud, ~ fun, ~ chr,
 #'   \item{\code{"type"}}{ \code{(character)} The R data class}
 #' }
 #' @return See outtype
-
 #' @export
 
 col_types <- function(x, outtype = c("chr", "hud", "fun", "typ")[1]) {
@@ -201,13 +202,16 @@ col_types <- function(x, outtype = c("chr", "hud", "fun", "typ")[1]) {
     out <- out[[1]]
   out
 }
+
+
 #' @title Translate HUD Export Specification Tables to useful R equivalents
-#' @inheritSection col_types description
+#' @description Given various inputs, provide a col_type specification in the format indicated by `outtype`
 #' @param hud_spec \code{(data.frame)} HUD Specification table. Output from `hud_export_specs`.
 #' @inheritParams col_types
 #' @examples
 #' purrr::map(hud_export_specs(hud_pdf_data()), hud_spec_r_type)
 #' @export
+
 hud_spec_r_type <- function(hud_spec, outtype = c("chr", "hud", "fun", "typ")[1]) {
   fn <- purrr::when(outtype,
               . == "fun" ~ purrr::map,
