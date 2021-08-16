@@ -31,10 +31,15 @@ fill_missed_exportid <- function(.data) {
   .data
 }
 
+#' @title The most recent HUD Specifications PDF
+#' @export
+
+hud_spec_pdf <- "https://hudhdx.info/Resources/Vendors/HMIS_CSV_Specifications_FY2022_v1.0.pdf"
+
 #' @title Create a pdf data list from the HUD 2022 HMIS Specs
 #' @inherit pdftools::pdf_data
 #' @export
-hud_pdf_data <- function(pdf = "https://hudhdx.info/Resources/Vendors/HMIS_CSV_Specifications_FY2022_v1.0.pdf", font_info = TRUE, opw = "", upw = "") {
+hud_pdf_data <- function(pdf = hud_spec_pdf, font_info = TRUE, opw = "", upw = "") {
   pdftools::pdf_data(pdf, font_info = TRUE)
 }
 
