@@ -5,9 +5,9 @@ token_row <- function(.data, token, find_min = FALSE) {
   fn <- purrr::when(find_min,
               isTRUE(.) ~ dplyr::slice_min,
               ~ dplyr::slice_max)
-  eot <- dplyr::filter(.data, stringr::str_detect(text, token)) %>%
+  eot <- dplyr::filter(.data, stringr::str_detect(text, token)) |>
 
-    fn(order_by = y, n = 1) %>%
+    fn(order_by = y, n = 1) |>
     head(1)
 }
 
@@ -54,24 +54,20 @@ hud_export_specs <- function(hud_pdf_data) {
   numbering_starts_on_pg <- which(purrr::map_lgl(hud_pdf_data[-1], ~{
     !is.na(as.numeric(dplyr::slice_max(.x, y)$text))
   }))[1]
-  toc <- hud_specs_tbl[which(stringr::str_detect(hud_specs_tbl$text,"\\.{20}")),]$Page %>%
-    unique %>%
-    as.numeric
+  toc <- hud_specs_tbl[which(stringr::str_detect(hud_specs_tbl$text,"\\.{20}")),]$Page |>
+    unique() |>
+    as.numeric()
   toc_data <- dplyr::filter(hud_specs_tbl, Page %in% toc)
-  hud_export_pgs <- purrr::imap_int(hud.export::.hud_export, ~{
-    toc_ln <- dplyr::filter(toc_data, stringr::str_detect(text, paste0(.y, ".csv?")))
-    if (nrow(toc_ln) != 1)
-      stop(.y, " Page Number not detected properly")
-    nm_y <- toc_ln$y
-    pg <- toc_ln$Page
-    pg <- dplyr::filter(toc_data, y == nm_y, Page == pg) %>%
-      dplyr::pull(text) %>%
-      as.integer %>%
-      na.omit
+  browser()
+  export_nms <- dplyr::filter(toc_data, stringr::str_detect(text, "csv$"))
 
-  }) + numbering_starts_on_pg
-
-
+  hud_export_pgs <- {slider::slide_dbl(export_nms, ~{
+      dplyr::filter(toc_data, y == .x$y, Page == .x$Page) |>
+        dplyr::pull(text) |>
+        as.integer() |>
+        na.omit()
+    }) + numbering_starts_on_pg} |>
+      rlang::set_names(export_nms$text)
 
   hud_items_specs <- purrr::imap(hud_export_pgs, ~{
     pg <- .x
