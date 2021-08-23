@@ -34,12 +34,17 @@ fill_missed_exportid <- function(.data) {
 #' @title The most recent HUD Specifications PDF
 #' @export
 
-hud_spec_pdf <- "https://hudhdx.info/Resources/Vendors/HMIS_CSV_Specifications_FY2022_v1.0.pdf"
+hud_spec_2022 <- "https://hudhdx.info/Resources/Vendors/HMIS_CSV_Specifications_FY2022_v1.0.pdf"
+
+#' @title 2021 HUD Specifications PDF
+#' @export
+
+hud_spec_2021 <- "https://www.hudhdx.info/Resources/Vendors/HMIS%20CSV%20Specifications%20FY2020%20v1.8.pdf"
 
 #' @title Create a pdf data list from the HUD 2022 HMIS Specs
 #' @inherit pdftools::pdf_data
 #' @export
-hud_pdf_data <- function(pdf = hud_spec_pdf, font_info = TRUE, opw = "", upw = "") {
+hud_pdf_data <- function(pdf = hud_spec_2022, font_info = TRUE, opw = "", upw = "") {
   pdftools::pdf_data(pdf, font_info = TRUE)
 }
 
@@ -49,7 +54,8 @@ hud_pdf_data <- function(pdf = hud_spec_pdf, font_info = TRUE, opw = "", upw = "
 #' @return \code({list}) of tibbles with specifications from tables in the PDF
 #' @export
 
-hud_export_specs <- function(hud_pdf_data) {
+hud_export_specs <- function(path = hud_spec_2022) {
+  hud_pdf_data <- hud_pdf_data(path)
   hud_specs_tbl <- dplyr::bind_rows(hud_pdf_data, .id = "Page")
   numbering_starts_on_pg <- which(purrr::map_lgl(hud_pdf_data[-1], ~{
     !is.na(as.numeric(dplyr::slice_max(.x, y)$text))
@@ -58,7 +64,6 @@ hud_export_specs <- function(hud_pdf_data) {
     unique() |>
     as.numeric()
   toc_data <- dplyr::filter(hud_specs_tbl, Page %in% toc)
-  browser()
   export_nms <- dplyr::filter(toc_data, stringr::str_detect(text, "csv$"))
 
   hud_export_pgs <- {slider::slide_dbl(export_nms, ~{
@@ -72,9 +77,9 @@ hud_export_specs <- function(hud_pdf_data) {
   hud_items_specs <- purrr::imap(hud_export_pgs, ~{
     pg <- .x
     .data <- hud_pdf_data[[pg]]
-    title_ln <- min(stringr::str_which(.data$text, paste0(.y, ".csv?")))
+    title_ln <- min(stringr::str_which(.data$text, .y))
     .data <- .data[title_ln:nrow(.data),]
-    begin_token <- purrr::when(.y,                                                        .  == "Export" ~ "Name",
+    begin_token <- purrr::when(.y,                                                        grepl("Export", .) ~ "Name",
                                ~ "DE\\#")
     two_tables <- (hud_export_pgs %in% .x) > 1
     tbl_ln <- token_row(.data, begin_token, find_min = TRUE)
@@ -86,7 +91,7 @@ hud_export_specs <- function(hud_pdf_data) {
     }
 
     end_token <- purrr::when(.y,
-                             . == "Export" ~ "HashStatus",
+                             grepl("Export", .) ~ "HashStatus",
                              ~ "ExportID"
     )
     min_x <- min(tbl_ln$x) - tbl_ln$width
@@ -116,7 +121,8 @@ hud_export_specs <- function(hud_pdf_data) {
     } else {
       dims <- list(c(min_y, min_x, max_y, max_x))
     }
-    .args <- list(hud_specs,
+
+    .args <- list(path,
                   pages = pgs,
                   area = dims,
                   output = "data.frame")
@@ -219,3 +225,16 @@ hud_spec_r_type <- function(hud_spec, outtype = c("chr", "hud", "fun", "typ")[1]
               ~ purrr::map_chr)
   setNames(fn(hud_spec$Type, col_types, outtype = outtype), hud_spec$Name)
 }
+
+# 2021 types extracted
+# specs2021 <- hud_export_specs("https://www.hudhdx.info/Resources/Vendors/HMIS%20CSV%20Specifications%20FY2020%20v1.8.pdf")
+# col_types2021 <- purrr::map(specs2021, hud_spec_r_type) |>
+#   {\(x) {rlang::set_names(x, stringr::str_remove(names(x), "\\.csv$"))}}()
+#
+# hud_export2021 <- purrr::imap(.hud_export, ~{
+#   if (.y %in% names(col_types2021)) {
+#     .x$col_types <- col_types2021[[.y]]
+#     .x
+#   }
+#
+# })
