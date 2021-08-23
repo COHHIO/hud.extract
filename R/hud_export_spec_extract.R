@@ -31,6 +31,12 @@ fill_missed_exportid <- function(.data) {
   .data
 }
 
+fix_SSN5 <- function(.data) {
+  if ("SSN5" %in% names(.data))
+    .data <- dplyr::rename(.data, SSN = "SSN5")
+  .data
+}
+
 #' @title The most recent HUD Specifications PDF
 #' @export
 
@@ -149,10 +155,12 @@ hud_export_specs <- function(path = hud_spec_2022) {
     ))
     )
 
-    cn <- purrr::when(.y == "Export", isTRUE(.) ~ 1, ~ 2)
+    # cn <- purrr::when(.y == "Export", isTRUE(.) ~ 1, ~ 2)
     # browser(expr = inherits(out, "try-error"))
     # browser(expr = out[nrow(out), cn] != end_token)
-    fill_missed_exportid(out)
+    out |>
+      fill_missed_exportid() |>
+      fix_SSN5()
   })
 
   # Cleanup ----
