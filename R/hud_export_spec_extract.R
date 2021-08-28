@@ -45,7 +45,7 @@ hud_spec_2022 <- "https://hudhdx.info/Resources/Vendors/HMIS_CSV_Specifications_
 #' @title 2021 HUD Specifications PDF
 #' @export
 
-hud_spec_2021 <- "https://www.hudhdx.info/Resources/Vendors/HMIS%20CSV%20Specifications%20FY2020%20v1.8.pdf"
+hud_spec_2020 <- "https://www.hudhdx.info/Resources/Vendors/HMIS%20CSV%20Specifications%20FY2020%20v1.8.pdf"
 
 #' @title Create a pdf data list from the HUD 2022 HMIS Specs
 #' @inherit pdftools::pdf_data
@@ -66,11 +66,11 @@ hud_export_specs <- function(path = hud_spec_2022) {
   numbering_starts_on_pg <- which(purrr::map_lgl(hud_pdf_data[-1], ~{
     !is.na(as.numeric(dplyr::slice_max(.x, y)$text))
   }))[1]
-  toc <- hud_specs_tbl[which(stringr::str_detect(hud_specs_tbl$text,"\\.{20}")),]$Page |>
+  toc <- hud_specs_tbl[which(stringr::str_detect(hud_specs_tbl$text,"\\.{10}")),]$Page |>
     unique() |>
     as.numeric()
   toc_data <- dplyr::filter(hud_specs_tbl, Page %in% toc)
-  export_nms <- dplyr::filter(toc_data, stringr::str_detect(text, "csv$"))
+  export_nms <- dplyr::filter(toc_data, stringr::str_detect(text, "\\.csv"))
 
   hud_export_pgs <- {slider::slide_dbl(export_nms, ~{
       dplyr::filter(toc_data, y == .x$y, Page == .x$Page) |>
@@ -78,7 +78,7 @@ hud_export_specs <- function(path = hud_spec_2022) {
         as.integer() |>
         na.omit()
     }) + numbering_starts_on_pg} |>
-      rlang::set_names(export_nms$text)
+      rlang::set_names(stringr::str_extract(export_nms$text, "[\\w\\*]+\\.csv"))
 
   hud_items_specs <- purrr::imap(hud_export_pgs, ~{
     pg <- .x
@@ -234,15 +234,15 @@ hud_spec_r_type <- function(hud_spec, outtype = c("chr", "hud", "fun", "typ")[1]
   setNames(fn(hud_spec$Type, col_types, outtype = outtype), hud_spec$Name)
 }
 
-# 2021 types extracted
-# specs2021 <- hud_export_specs("https://www.hudhdx.info/Resources/Vendors/HMIS%20CSV%20Specifications%20FY2020%20v1.8.pdf")
-# col_types2021 <- purrr::map(specs2021, hud_spec_r_type) |>
+# 202o types extracted
+# specs2020 <- hud_export_specs("https://www.hudhdx.info/Resources/Vendors/HMIS%20CSV%20Specifications%20FY2020%20v1.8.pdf")
+# col_types2020 <- purrr::map(specs2020, hud_spec_r_type) |>
 #   {\(x) {rlang::set_names(x, stringr::str_remove(names(x), "\\.csv$"))}}()
-#
-# hud_export2021 <- purrr::imap(.hud_export, ~{
-#   if (.y %in% names(col_types2021)) {
-#     .x$col_types <- col_types2021[[.y]]
+# .hud_export <- source("../clarity.looker/R/hud_export_2022.R")$value
+# hud_export2020 <- purrr::imap(col_types2020, ~{
+#   if (is.list(.hud_export[[.y]]))
+#     purrr::list_modify(.hud_export[[.y]], col_types = .x)
+#   else
 #     .x
-#   }
-#
 # })
+# dput(hud_export2020, file = "../clarity.looker/R/hud_export_2020.R")
