@@ -78,6 +78,8 @@ hud_value_tables <- function(hud_pdf_data, dims, .write = TRUE, verify = interac
       stringr::str_replace_all(.x, "â€“", "-") |>
         stringr::str_replace_all("â€™", "'")
     })
+    # Coerce Value to numeric
+    out <- dplyr::mutate(out, Value = as.numeric(Value))
     if (.write) {
       if (!dir.exists(path))
         UU::mkpath(path)
@@ -99,3 +101,29 @@ hud_value_tables <- function(hud_pdf_data, dims, .write = TRUE, verify = interac
 c("3.12.1 Living situation Option List", "V7.P DependentUnder6", "C3.B CurrentEdStatus")
 
 
+
+hud_translate <- function(x, hash_file) {
+  UseMethod("hud_translate")
+}
+hud_translate.numeric <- function(x, hash) {
+  purrr::map_chr(x, ~hash[["Text"]][.x == hash[["Value"]]])
+}
+hud_translate.character <- function(x, hash_file) {
+  purrr::map_int(x, ~hash[["Value"]][.x == hash[["Text"]]])
+}
+
+#' @title Translate HUD Coding of Data Elements
+#' @description Translate values from HUD Data elements between values or text
+#' @param .x \code{(character/numeric)} The values to translate
+#' @return \code{(character/numeric)} equivalent, depending on the input
+hud_translations <- list.files(full.names = TRUE, file.path("inst", "export_translations")) |>
+  {\(x) {rlang::set_names(x, stringr::str_remove(basename(x), "\\.feather"))}}() |>
+  purrr::map(~
+               rlang::new_function(args = rlang::pairlist2(.x = ), body = rlang::expr({
+                 hud_translate(.x, feather::read_feather(system.file("export_translations", !!basename(.x), package = "hud.extract", mustWork = TRUE)))
+               })
+               )
+  ) |>
+  {\(x) {rlang::list2(
+    !!!x
+  )}}()
