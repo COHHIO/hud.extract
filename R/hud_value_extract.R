@@ -119,8 +119,14 @@ hud_translate.character <- function(x, hash_file) {
 hud_translations <- list.files(full.names = TRUE, file.path("inst", "export_translations")) |>
   {\(x) {rlang::set_names(x, stringr::str_remove(basename(x), "\\.feather"))}}() |>
   purrr::map(~
-               rlang::new_function(args = rlang::pairlist2(.x = ), body = rlang::expr({
-                 hud_translate(.x, feather::read_feather(system.file("export_translations", !!basename(.x), package = "hud.extract", mustWork = TRUE)))
+               rlang::new_function(args = rlang::pairlist2(.x = , table = FALSE), body = rlang::expr({
+                 hash <- feather::read_feather(system.file("export_translations", !!basename(.x), package = "hud.extract", mustWork = TRUE))
+                 if (table) {
+                   out <- hash
+                 } else {
+                   out <- hud_translate(.x, hash)
+                 }
+
                })
                )
   ) |>
