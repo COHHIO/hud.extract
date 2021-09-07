@@ -4,7 +4,7 @@
 \alias{hud_export_specs}
 \title{Extract HUD Export Item Specifications}
 \usage{
-hud_export_specs(hud_pdf_data)
+hud_export_specs(path = hud_spec_2022)
 }
 \arguments{
 \item{hud_pdf_data}{\code{tibble} output from \code{hud_pdf_data}}

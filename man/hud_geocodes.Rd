@@ -4,14 +4,24 @@
 \alias{hud_geocodes}
 \title{Extract HUD Geocodes}
 \usage{
-hud_geocodes(file)
+hud_geocodes(
+ 
+    file = "https://www.hud.gov/sites/dfiles/CPD/documents/FY-2021-GeoCodes-with-PPRN_Final.pdf",
+  path = "data",
+  overwrite = FALSE
+)
 }
 \arguments{
 \item{file}{\code{(character)} the file path or URL. If none is specified, the \emph{inst} directory is searched for the most recent file.}
+
+\item{path}{\code{(character)} The path to save the feather file for the extracted data.}
 }
 \value{
-\code{(tbl_df)} of geocodes
+\code{(tbl_df)} of geocodes. A message indicating where the feather file has been saved for quick retrieval.
 }
 \description{
 Extract HUD Geocodes from latest specification pdf in inst folder
+}
+\details{
+Extracting tables from every page of a PDF is an expensive process, therefore this function saves a  \link[feather]{feather} file for rapid retrieval. The file will be written to \code{path} with the same name as the pdf passed to \code{file}.
 }

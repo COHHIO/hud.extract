@@ -116,6 +116,7 @@ hud_translate.character <- function(x, hash_file) {
 #' @description Translate values from HUD Data elements between values or text
 #' @param .x \code{(character/numeric)} The values to translate
 #' @return \code{(character/numeric)} equivalent, depending on the input
+#' @export
 hud_translations <- list.files(full.names = TRUE, file.path("inst", "export_translations")) |>
   {\(x) {rlang::set_names(x, stringr::str_remove(basename(x), "\\.feather"))}}() |>
   purrr::map(~

@@ -4,12 +4,7 @@
 \alias{hud_pdf_data}
 \title{Create a pdf data list from the HUD 2022 HMIS Specs}
 \usage{
-hud_pdf_data(
-  pdf = "https://hudhdx.info/Resources/Vendors/HMIS_CSV_Specifications_FY2022_v1.0.pdf",
-  font_info = TRUE,
-  opw = "",
-  upw = ""
-)
+hud_pdf_data(pdf = hud_spec_2022, font_info = TRUE, opw = "", upw = "")
 }
 \arguments{
 \item{pdf}{file path or raw vector with pdf data}
