@@ -127,7 +127,7 @@ hud_translations <- list.files(full.names = TRUE, file.path("inst", "export_tran
                  } else {
                    out <- hud_translate(.x, hash)
                  }
-
+                 out
                })
                )
   ) |>

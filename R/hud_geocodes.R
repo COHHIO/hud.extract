@@ -1,3 +1,10 @@
+#' @title Create a table that maps Ohio Cities to Counties
+#' @description This uses online references to create a table that maps Ohio Cities to Counties.
+#' @details Extracting tables from every page of a PDF is an expensive process, therefore this function saves a  \link[feather]{feather} file for rapid retrieval. The file will be written to `path` with the same name as the pdf passed to `file`.
+#' @param file \code{(character)} the file path or URL. If none is specified, the *inst* directory is searched for the most recent file.
+#' @param path \code{(character)} The path to save the feather file for the extracted data.
+#' @param overwrite \code{(logical)} Whether to overwrite the existing feather file or just read it and return it.
+#' @return \code{(tbl_df)} of geocodes. A message indicating where the feather file has been saved for quick retrieval.
 ohio_city2county <- function(file = "https://www.omlohio.org/DocumentCenter/View/117/Municipalities-in-Ohio-PDF",
                              path = file.path("data", "ohio_city2county.feather"), overwrite = FALSE) {
 
@@ -8,8 +15,10 @@ ohio_city2county <- function(file = "https://www.omlohio.org/DocumentCenter/View
     city_table <- rlang::exec(rbind, city_table[[1]][3:nrow(city_table[[1]]),], !!!city_table[2:length(city_table)])|>
       tibble::as_tibble() |>
       setNames(c("City", "Muni", "County", "Census")) |>
-      tibble::add_row(City = "Hamilton City", County = "Hamilton") |>
+      # Add missing cases
+      tibble::add_row(City = "Hamilton City", County = "Butler") |>
       tibble::add_row(City = "Cleveland Heights", County = "Summit")
+
     feather::write_feather(city_table, path)
   }
   return(city_table)
@@ -44,6 +53,7 @@ hud_geocodes <- function(file = "https://www.hud.gov/sites/dfiles/CPD/documents/
 
       out
     })
+
     feather::write_feather(tables, fp)
     cli::cli_alert_success(paste0("Tables saved to ",fp))
   }
@@ -60,8 +70,12 @@ ohio_geocodes <- function(geocodes) {
   ohio_tables
 }
 
-ohio_geocodes_full <- function(files = historical_geocode_pdfs) {
-  tables <- purrr::map(files, hud_geocodes)
+#' @title Extract HUD Geocodes for the state of Ohio
+#' @inherit hud_geocodes description params return details
+#' @export
+ohio_geocodes_full <- function(files = historical_geocode_pdfs, overwrite = FALSE) {
+  force(overwrite)
+  tables <- purrr::map(files, hud_geocodes, overwrite = overwrite)
   # get the common cols
   common_cols <- table(do.call(c, purrr::map(tables, names))) |>
     {\(x) {x[x == UU::smode(x)]}}() |>
@@ -69,7 +83,12 @@ ohio_geocodes_full <- function(files = historical_geocode_pdfs) {
   tables <- purrr::map(tables, ~.x[names(.x) %in% common_cols])
   purrr::map_dfr(tables, ~{
     ohio_geocodes(.x)
-  }) |>
+  })  |>
+    # Fix special cases
+    dplyr::mutate(County = dplyr::case_when(
+      GeographicCode == 391176 ~ "Clark",
+      GeographicCode == 395874 ~ "Mahoning/Trumbull",
+      is.character(County) ~ County)) |>
   dplyr::distinct(GeographicCode, .keep_all = TRUE)
 }
 
