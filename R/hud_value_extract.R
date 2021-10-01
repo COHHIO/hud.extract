@@ -102,16 +102,28 @@ c("3.12.1 Living situation Option List", "V7.P DependentUnder6", "C3.B CurrentEd
 
 
 
-hud_translate <- function(x, hash_file) {
+#' @title Translate Numeric/Character from a Hash Table with columns Value/Text
+#'
+#' @param x \code{(character/numeric)} vector to translate
+#' @param hash \code{(data.frame)} with Value/Text numeric/character corresponding to the value to translate
+#'
+#' @return \code{(numeric/character)} Whichever class is opposite the input vector
+#' @export
+
+hud_translate <- function(x, hash) {
   UseMethod("hud_translate")
 }
+#' @title S3 Method for hud_translate
+#' @export
 hud_translate.numeric <- function(x, hash) {
   out <- rep(NA_character_, length(x))
   na <- is.na(x)
   out[!na] <- purrr::map_chr(x[!na], ~hash[["Text"]][.x == hash[["Value"]]])
   out
 }
-hud_translate.character <- function(x, hash_file) {
+#' @title S3 Method for hud_translate
+#' @export
+hud_translate.character <- function(x, hash) {
   out <- rep(NA_real_, length(x))
   na <- is.na(x)
   out[!na] <- purrr::map_dbl(x[!na], ~hash[["Value"]][.x == hash[["Text"]]])
