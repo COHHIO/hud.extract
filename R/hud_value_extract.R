@@ -106,10 +106,16 @@ hud_translate <- function(x, hash_file) {
   UseMethod("hud_translate")
 }
 hud_translate.numeric <- function(x, hash) {
-  purrr::map_chr(x, ~hash[["Text"]][.x == hash[["Value"]]])
+  out <- rep(NA_character_, length(x))
+  na <- is.na(x)
+  out[!na] <- purrr::map_chr(x[!na], ~hash[["Text"]][.x == hash[["Value"]]])
+  out
 }
 hud_translate.character <- function(x, hash_file) {
-  purrr::map_int(x, ~hash[["Value"]][.x == hash[["Text"]]])
+  out <- rep(NA_real_, length(x))
+  na <- is.na(x)
+  out[!na] <- purrr::map_dbl(x[!na], ~hash[["Value"]][.x == hash[["Text"]]])
+  out
 }
 
 #' @title Translate HUD Coding of Data Elements
