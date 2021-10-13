@@ -2,12 +2,7 @@
 
 
 token_row <- function(.data, token, find_min = FALSE) {
-  fn <- purrr::when(find_min,
-              isTRUE(.) ~ dplyr::slice_min,
-              ~ dplyr::slice_max)
   eot <- dplyr::filter(.data, stringr::str_detect(text, token)) |>
-
-    fn(order_by = y, n = 1) |>
     head(1)
 }
 
@@ -16,8 +11,15 @@ concat_rows <- function(.data) {
     # all but export conform to this condition
     wrapped <- !nzchar(.data[[2]])
 
-    to_concat <- as.numeric(rownames(.data[wrapped,])) - 1
-    .data[to_concat, "Notes"] <- paste0(.data[to_concat, "Notes"], " ", .data[wrapped,1])
+    to_concat <- UU::rle_df(wrapped) |>
+      dplyr::filter(values) |>
+      slider::slide(~.x$start:.x$end)
+
+
+    to_fill <- purrr::map_chr(to_concat, ~{
+      paste0(.data[min(.x) - 1, "Notes"]," ", unlist(.data[.x,]), collapse = " ")
+    })
+    .data[purrr::map_dbl(to_concat, min), "Notes"] <- to_fill
     .data <- .data[!wrapped, ]
   }
   .data
@@ -26,21 +28,31 @@ concat_rows <- function(.data) {
 fill_missed_exportid <- function(.data) {
   if (!"ExportID" %in% .data$Name) {
     .data <- tibble::add_row(.data, Name = "ExportID", Type = "S32")
-    .data[nrow(.data), is.na(.data[nrow(.data),])] <- ""
+
   }
   .data
 }
 
-fix_SSN5 <- function(.data) {
-  if ("SSN5" %in% names(.data))
-    .data <- dplyr::rename(.data, SSN = "SSN5")
+fix_footnotes <- function(.data) {
+  fixes <- c(
+    "SSN",
+    "Geocode",
+    "LastPermanentZIP"
+  )
+
+  for (i in seq_along(fixes)) {
+    regex <- paste0("^",fixes[i],"\\d$")
+    to_fix <- stringr::str_detect(.data$Name, regex)
+    if (any(to_fix))
+      .data[to_fix, "Name"] <- fixes[i]
+  }
   .data
 }
 
 #' @title The most recent HUD Specifications PDF
 #' @export
 
-hud_spec_2022 <- "https://hudhdx.info/Resources/Vendors/HMIS_CSV_Specifications_FY2022_v1.0.pdf"
+hud_spec_2022 <- "https://hudhdx.info/Resources/Vendors/HMIS_CSV_Specifications_FY2022_v1.2_clean.pdf"
 
 #' @title 2021 HUD Specifications PDF
 #' @export
@@ -54,16 +66,20 @@ hud_pdf_data <- function(pdf = hud_spec_2022, font_info = TRUE, opw = "", upw = 
   pdftools::pdf_data(pdf, font_info = TRUE)
 }
 
+
+.hud_types <- c("S32", "S50", "S250", "D", "I", "T")
+.hud_tbl_cols <- c("DE.", "Name", "Type", "List", "Null", "Notes")
+
 #' @title Extract HUD Export Item Specifications
 #' @description Extract the specifications for each of the HUD Export Items from the HUD Specifications PDF
-#' @param hud_pdf_data \code{tibble} output from `hud_pdf_data`
+#' @param path \code{character/list/tibble} Either a character vector with path to the HUD CSV Spec PDF or output from `hud_pdf_data`
 #' @return \code({list}) of tibbles with specifications from tables in the PDF
 #' @export
 
 hud_export_specs <- function(path = hud_spec_2022) {
-  hud_pdf_data <- hud_pdf_data(path)
-  hud_specs_tbl <- dplyr::bind_rows(hud_pdf_data, .id = "Page")
-  numbering_starts_on_pg <- which(purrr::map_lgl(hud_pdf_data[-1], ~{
+  pdf_data <- suppressWarnings(hud_pdf_data(path))
+  hud_specs_tbl <- dplyr::bind_rows(pdf_data, .id = "Page")
+  numbering_starts_on_pg <- which(purrr::map_lgl(pdf_data[-1], ~{
     !is.na(as.numeric(dplyr::slice_max(.x, y)$text))
   }))[1]
   toc <- hud_specs_tbl[which(stringr::str_detect(hud_specs_tbl$text,"\\.{10}")),]$Page |>
@@ -79,46 +95,46 @@ hud_export_specs <- function(path = hud_spec_2022) {
         na.omit()
     }) + numbering_starts_on_pg} |>
       rlang::set_names(stringr::str_extract(export_nms$text, "[\\w\\*]+\\.csv"))
+  hud_export_pgs <- hud_export_pgs[stringr::str_detect(names(hud_export_pgs), "\\*", negate = TRUE)]
 
-  hud_items_specs <- purrr::imap(hud_export_pgs, ~{
+
+  hud_specs_tbl <- dplyr::mutate(hud_specs_tbl, Page = as.numeric(Page))
+  purrr::imap(hud_export_pgs, ~{
+    message(.y)
+
     pg <- .x
-    .data <- hud_pdf_data[[pg]]
+    ni <- hud_export_pgs[which(names(hud_export_pgs) %in% .y) + 1]
+    if (!UU::is_legit(ni) || .y == "YouthEducationStatus.csv")
+      ni = .x+2
+    pgs <- .x:ni
+    .data <- hud_specs_tbl |>
+      dplyr::filter(Page %in% pgs)
     title_ln <- min(stringr::str_which(.data$text, .y))
     .data <- .data[title_ln:nrow(.data),]
     begin_token <- purrr::when(.y,                                                        grepl("Export", .) ~ "Name",
                                ~ "DE\\#")
-    two_tables <- (hud_export_pgs %in% .x) > 1
-    tbl_ln <- token_row(.data, begin_token, find_min = TRUE)
-    if (nrow(tbl_ln) == 0) {
-      # If the table starts on a page following the title page
-      pg <- pg + 1
-      .data <- hud_pdf_data[[pg]]
-      tbl_ln <- token_row(.data, begin_token, find_min = TRUE)
-    }
-
+    two_tables <- sum(hud_export_pgs %in% .x) > 1
+    # First row of table
+    fr <- token_row(.data, begin_token)
+    min_x <- min(fr$x) - fr$width
+    min_y <- min(fr$y)
+    max_x <- max(.data$x)
     end_token <- purrr::when(.y,
-                             grepl("Export", .) ~ "HashStatus",
+                         grepl("Export", .) ~ "HashStatus",
                              ~ "ExportID"
     )
-    min_x <- min(tbl_ln$x) - tbl_ln$width
-    min_y <- min(tbl_ln$y)
-    max_x <- max(.data$x)
-    lr <- token_row(.data, end_token, find_min = two_tables)
-    o_pg <- pg
-    while(nrow(lr) != 1) {
-      pg <- pg + 1
-      .data <- hud_pdf_data[[pg]]
-      lr <- token_row(.data, end_token, find_min = two_tables)
-    }
+    # Last row of table
+    lr <- token_row(.data, end_token)
+
     row_height <- (lr$height + 2)
     max_y <- lr$y + row_height
-    pgs <- get0("o_pg", inherits = F, ifnotfound = pg):pg
+    pgs <- fr$Page:lr$Page
     if (length(pgs) > 1) {
       dims <- purrr::imap(pgs, ~{
         if (.y == 1)
-          c(min_y, min_x, max(hud_pdf_data[[.x]]$y) + row_height, max_x)
+          c(min_y, min_x, max(pdf_data[[.x]]$y) + row_height, max_x)
         else if (.y == length(pgs))
-          c(min(hud_pdf_data[[.x]]$y), min_x, max_y, max_x)
+          c(min(pdf_data[[.x]]$y), min_x, max_y, max_x)
         else {
           "guess"
         }
@@ -147,6 +163,7 @@ hud_export_specs <- function(path = hud_spec_2022) {
       tbls <- do.call(tabulizer::extract_tables, .args)
     }
 
+
     out <- try(dplyr::bind_rows(purrr::map(
       tbls,
       ~ dplyr::mutate(.x, across(where( ~ !is.character(
@@ -155,18 +172,83 @@ hud_export_specs <- function(path = hud_spec_2022) {
     ))
     )
 
-    # cn <- purrr::when(.y == "Export", isTRUE(.) ~ 1, ~ 2)
-    # browser(expr = inherits(out, "try-error"))
-    # browser(expr = out[nrow(out), cn] != end_token)
-    out |>
-      fill_missed_exportid() |>
-      fix_SSN5()
+
+
+    # Fix parse errors ----
+    # Fri Oct 08 17:07:40 2021
+    # Fix extra cols
+    out <- purrr::keep(out, ~!all(is.na(.x))) |>
+      purrr::map_dfc(~{
+        .x[is.na(.x)] <- ""
+        .x
+      })
   })
 
-  # Cleanup ----
-  # Thu Jul 22 17:21:16 2021
-  hud_items_specs <- purrr::map(hud_items_specs, concat_rows)
+}
 
+hud_export_clean <- function(hud_tbl) {
+
+  #browser(expr = .y == "Exit.csv")
+  if (ncol(hud_tbl) > 6) {
+    i <- which(purrr::map_lgl(hud_tbl[,7,drop = TRUE], ~!is.na(.x) & nzchar(.x)))
+    hud_tbl[i, "Notes"] <- hud_tbl[i, 7]
+    hud_tbl <- hud_tbl[names(hud_tbl) %in% .hud_tbl_cols]
+  }
+
+
+  # handle Double line table entries
+  col_shifts <- purrr::map_lgl(hud_tbl$Name, ~.x %in% c(.hud_types, ""))
+  if (any(col_shifts)) {
+    # Handle cases where Name is wrapped and columns shifted
+    dbl_line <- purrr::map_lgl(hud_tbl$Name, ~.x %in% .hud_types)
+    for (i in which(dbl_line)) {
+      hud_tbl[i - 1, ] <- c(hud_tbl[i - 1, 1], paste0(hud_tbl[i - 1, -1], hud_tbl[i,-ncol(hud_tbl)]))
+    }
+    hud_tbl <- hud_tbl[!dbl_line,]
+    # Handle cases with DE# line-wrap
+    dbl_de <- stringr::str_detect(hud_tbl[[1]], "^\\&")
+    for (i in which(dbl_de)) {
+      r <- paste0(hud_tbl[i - 1, ], hud_tbl[i, ])
+      if (!is.data.frame(r))
+        r <- tibble::tibble_row(!!!rlang::set_names(r, .hud_tbl_cols))
+      hud_tbl[i - 1, ] <- r
+    }
+    hud_tbl <- hud_tbl[!dbl_de,]
+    # Handle Cases where Notes is wrapped
+
+    note_wraps <- !nzchar(hud_tbl[[1]])
+    if (UU::is_legit(note_wraps) & any(note_wraps) & FALSE) {
+      # Notes may wrap multiple lines
+      note_ind <- which(note_wraps)
+      note_runs <- UU::rle_df(diff(note_ind)) |>
+        dplyr::filter(values == 1) |>
+        slider::slide(~{
+          run <- .x$start:.x$end
+          unique(c(run, run + 1))
+        })
+      to_rm <- c()
+      for (i in note_runs) {
+        .ind <- note_ind[i]
+        .col <- purrr::map_lgl(hud_tbl, ~all(nzchar(.x[.ind])))
+        hud_tbl[.ind[1] - 1, "Notes"] <- paste(hud_tbl[.ind[1] - 1, "Notes"], hud_tbl[.ind, .col], collapse = " ")
+        to_rm <- c(to_rm, .ind)
+      }
+
+      note_ind <- note_ind[!note_ind %in% to_rm]
+      for (i in note_ind) {
+        hud_tbl[i - 1, "Notes"] <- paste(hud_tbl[i - 1, "Notes"], hud_tbl$DE.[i])
+      }
+      hud_tbl <- hud_tbl[!note_wraps,]
+    }
+  }
+
+
+  # cn <- purrr::when(.y == "Export", isTRUE(.) ~ 1, ~ 2)
+  # browser(expr = out[nrow(out), cn] != end_token)
+  hud_tbl |>
+    fill_missed_exportid() |>
+    fix_footnotes() |>
+    concat_rows()
 }
 
 hash <- tibble::tribble(~ typ, ~ hud, ~ fun, ~ chr,
@@ -231,18 +313,23 @@ hud_spec_r_type <- function(hud_spec, outtype = c("chr", "hud", "fun", "typ")[1]
   fn <- purrr::when(outtype,
               . == "fun" ~ purrr::map,
               ~ purrr::map_chr)
-  setNames(fn(hud_spec$Type, col_types, outtype = outtype), hud_spec$Name)
+  ind <- nzchar(hud_spec$Name)
+  setNames(fn(hud_spec$Type[ind], col_types, outtype = outtype), hud_spec$Name[ind])
 }
 
 # 202o types extracted
-# specs2020 <- hud_export_specs("https://www.hudhdx.info/Resources/Vendors/HMIS%20CSV%20Specifications%20FY2020%20v1.8.pdf")
-# col_types2020 <- purrr::map(specs2020, hud_spec_r_type) |>
+# specs <- hud_export_specs(hud_spec_2022)
+# specs_clean <- purrr::map(specs, hud_export_clean)
+# .col_types <- purrr::map(specs_clean, hud_spec_r_type) |>
 #   {\(x) {rlang::set_names(x, stringr::str_remove(names(x), "\\.csv$"))}}()
 # .hud_export <- source("../clarity.looker/R/hud_export_2022.R")$value
-# hud_export2020 <- purrr::imap(col_types2020, ~{
+# hud_export <- purrr::imap(.col_types, ~{
+#   # Integrity check
+#   if (names(.x)[1] != paste(ifelse(.y == "Client", "Personal", .y),"ID") && names(.x)[length(.x)] != ifelse(.y == "Export", "HashStatus", "ExportID"))
+#     stop(.y, " is missing col_types.")
 #   if (is.list(.hud_export[[.y]]))
 #     purrr::list_modify(.hud_export[[.y]], col_types = .x)
 #   else
 #     .x
 # })
-# dput(hud_export2020, file = "../clarity.looker/R/hud_export_2020.R")
+# dput(hud_export, file = "../clarity.looker/R/hud_export_2022.R")
