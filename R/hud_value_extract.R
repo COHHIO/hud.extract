@@ -20,7 +20,7 @@ hud_dimensions <- function(file = hud_spec_pdf, pg = 20) {
 #' @param dims \code{(list)} output from `hud_dimensions`
 #' @export
 
-hud_value_tables <- function(hud_pdf_data, dims, .write = TRUE, verify = interactive(), overwrite = FALSE, path = file.path("data", "public", "export_text_translations")) {
+hud_value_tables <- function(hud_pdf_data = hud_pdf_data(), dims, .write = TRUE, verify = interactive(), overwrite = FALSE, path = file.path("data", "public", "export_text_translations")) {
 
   tbl <- hud_pdf_table(hud_pdf_data)
   app_begin <- dplyr::filter(tbl, stringr::str_detect(text, "Appendix|^B$") & stringr::str_detect(font_name, "Light$")) |>
@@ -41,6 +41,7 @@ hud_value_tables <- function(hud_pdf_data, dims, .write = TRUE, verify = interac
   value_tables <- slider::slide(titles, .before = 1L, .complete = TRUE, ~{
     rows <- .x
     fp <- file.path(path, paste0(UU::make_names(rows$titles[1]), ".feather"))
+
     if (file.exists(fp) && !overwrite)
       return(feather::read_feather(fp))
 
