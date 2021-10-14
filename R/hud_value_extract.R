@@ -9,7 +9,7 @@ hud_pdf_table <- function(hud_pdf_data) {
 #' @param pg \code{(numeric)} Page number to use. Pages with a table filling the entire content will provide the most accurate boundaries of the main content area.
 #' @return \code{(named list)} with X & Y minimums and maximums
 #' @export
-hud_dimensions <- function(file = hud_spec_pdf, pg = 20) {
+hud_dimensions <- function(file = hud_spec_2022, pg = 20) {
   setNames(as.list(tabulizer::locate_areas(file, pages = pg)[[1]]),
            c("y_min", "x_min", "y_max", "x_max"))
 }
@@ -17,12 +17,11 @@ hud_dimensions <- function(file = hud_spec_pdf, pg = 20) {
 #' @title Create hash table functions that transform code specification integers to human-legible characters
 #' @description This function parses the appendices of the HUD Spec PDF where Value => Text correspondence tables are represented and transforms these tables into functions that allow coercion between Value/Text
 #' @param \code{(list)} output from `hud_pdf_data`
-#' @param dims \code{(list)} output from `hud_dimensions`
+#' @param dims \code{(list)} output from `hud_dimensions`. *Required*
 #' @export
 
-hud_value_tables <- function(hud_pdf_data = hud_pdf_data(), dims, .write = TRUE, verify = interactive(), overwrite = FALSE, path = file.path("data", "public", "export_text_translations")) {
-
-  tbl <- hud_pdf_table(hud_pdf_data)
+hud_value_tables <- function(pdf = hud_spec_2022, dims = hud_dimensions(hud_spec_2022), .write = TRUE, verify = interactive(), overwrite = FALSE, path = file.path("data", "public", "export_text_translations")) {
+  tbl <- hud_pdf_table(hud_pdf_data(pdf))
   app_begin <- dplyr::filter(tbl, stringr::str_detect(text, "Appendix|^B$") & stringr::str_detect(font_name, "Light$")) |>
     {\(x) {UU::smode(x$pg)}}()
   app_end <- dplyr::filter(tbl, stringr::str_detect(text, "Appendix|^C") & stringr::str_detect(font_name, "Light$")) |>
@@ -60,13 +59,21 @@ hud_value_tables <- function(hud_pdf_data = hud_pdf_data(), dims, .write = TRUE,
       area <- list(c(y_min = rows$y[1], x_min = dims$x_min, y_max = rows$y[2], x_max = dims$x_max))
     }
 
-    table <- tibble::as_tibble(do.call(rbind, tabulizer::extract_tables(file = hud_spec_pdf,
-                              pages = pgs,
-                              area = area)), .name_repair = "minimal")
-    if (table[1,1] != "Value")
-      table <- table[-1,]
+    raw_table <- do.call(rbind, tabulizer::extract_tables(file = pdf,
+                                             pages = pgs, area = area))
+    title_row <- which(stringr::str_detect(raw_table[,1], "^Value"))
+    if (UU::is_legit(title_row)) {
+      row_rm <- purrr::when(title_row,
+                  . > 1 ~ 1:title_row,
+                  ~ title_row)
 
-    table <- setNames(table, table[1,])
+      table <- setNames(tibble::as_tibble(raw_table), raw_table[title_row,])[-row_rm,]
+    } else {
+      table <- setNames(tibble::as_tibble(raw_table), c("Value", "Text"))
+    }
+
+    table <- concat_rows(table, translation_tables = TRUE)
+
     # Filter the rows with values equivalent to the table names
     filter_expr <- try({paste0(purrr::map_chr(names(table), ~{
       paste0("`",.x, "` != '", .x,"'")
@@ -80,17 +87,26 @@ hud_value_tables <- function(hud_pdf_data = hud_pdf_data(), dims, .write = TRUE,
         stringr::str_replace_all("â€™", "'")
     })
     # Coerce Value to numeric
-    out <- dplyr::mutate(out, Value = as.numeric(Value))
+    if (!stringr::str_detect(.x$titles[1], "VAMCStationNumber$"))
+      out <- dplyr::mutate(out, Value = as.numeric(Value))
+
     if (.write) {
       if (!dir.exists(path))
         UU::mkpath(path)
       print(out, n = nrow(out))
       if (verify) {
-        can_write <- utils::askYesNo("Is the above ready to write to feather?")
+        choices <- c("Yes" = TRUE, "Skip" = FALSE, "Browser" = NA)
+        can_write <- utils::menu(title = paste0("Can this table be written for ", .x$titles[1],"?"), choices = names(choices))
+        choice <- choices[can_write]
+
       }
-      if (!verify || isTRUE(get0("can_write")))
+      choice <- get0("choice")
+      browser(expr = is.na(choice))
+      if (!verify || isTRUE(choice)) {
         feather::write_feather(out, fp)
+      }
     }
+    out
   })
 
   value_tables <- setNames(value_tables, titles$titles)
@@ -99,7 +115,15 @@ hud_value_tables <- function(hud_pdf_data = hud_pdf_data(), dims, .write = TRUE,
 
 # Tables that didn't parse correctly
 
-c("3.12.1 Living situation Option List", "V7.P DependentUnder6", "C3.B CurrentEdStatus")
+# tibble::tribble(~Value, ~Text, 0, "Pursuing a high school diploma or GED",
+#                 1, "Pursuing Associate’s Degree",
+#                 2, "Pursuing Bachelor’s Degree",
+#                 3, "Pursuing Graduate Degree",
+#                 4, "Pursuing other post-secondary credential",
+#                 8, "Client doesn't know",
+#                 9, "Client refused",
+#                 99, "Data not collected") |> feather::write_feather(file.path("inst", "export_text_translations", "2022", "C3.B CurrentEdStatus.feather"))
+
 
 
 
@@ -136,11 +160,16 @@ hud_translate.character <- function(x, hash) {
 #' @param .x \code{(character/numeric)} The values to translate
 #' @return \code{(character/numeric)} equivalent, depending on the input
 #' @export
-hud_translations <- list.files(full.names = TRUE, file.path("inst", "export_translations")) |>
+hud_translations <- list.files(full.names = TRUE, file.path("inst", "export_text_translations", "2022")) |>
   {\(x) {rlang::set_names(x, stringr::str_remove(basename(x), "\\.feather"))}}() |>
   purrr::map(~
                rlang::new_function(args = rlang::pairlist2(.x = , table = FALSE), body = rlang::expr({
-                 hash <- feather::read_feather(system.file("export_translations", !!basename(.x), package = "hud.extract", mustWork = TRUE))
+                 hash <- feather::read_feather(system.file("export_text_translations", !!file.path("2022", basename(.x)), package = "hud.extract", mustWork = TRUE))
+                 if (!all(c("Value", "Text") %in% names(hash))) {
+                   rlang::warn("Translation table is irregular and isn't supported for translation. Returning table as-is")
+                   return(hash)
+                 }
+
                  if (table) {
                    out <- hash
                  } else {
