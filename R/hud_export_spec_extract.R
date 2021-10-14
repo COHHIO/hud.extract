@@ -6,21 +6,56 @@ token_row <- function(.data, token, find_min = FALSE) {
     head(1)
 }
 
-concat_rows <- function(.data) {
-  if (any(!nzchar(.data[[2]]))) {
+concat_rows <- function(.data, translation_tables = FALSE) {
+  col_to_check <- ifelse(translation_tables, 1, 2)
+  if (any(!nzchar(.data[[col_to_check]]))) {
     # all but export conform to this condition
-    wrapped <- !nzchar(.data[[2]])
+    wrapped <- !nzchar(.data[[col_to_check]])
 
     to_concat <- UU::rle_df(wrapped) |>
       dplyr::filter(values) |>
       slider::slide(~.x$start:.x$end)
 
 
-    to_fill <- purrr::map_chr(to_concat, ~{
-      paste0(.data[min(.x) - 1, "Notes"]," ", unlist(.data[.x,]), collapse = " ")
-    })
-    .data[purrr::map_dbl(to_concat, min), "Notes"] <- to_fill
-    .data <- .data[!wrapped, ]
+    if (!translation_tables) {
+      to_fill <- purrr::map_chr(to_concat, ~{
+        paste0(.data[min(.x) - 1, "Notes"]," ", unlist(.data[.x,]), collapse = " ")
+      })
+      .data[purrr::map_dbl(to_concat, min), "Notes"] <- to_fill
+      .data <- .data[!wrapped, ]
+    } else {
+
+      if (1 %in% to_concat[[1]]) {
+        # If there are long titles spanning multiple row
+        names(.data) <- purrr::imap_chr(.data[to_concat[[1]],], ~{
+          trimws(paste0(.y, " ", paste0(unlist(.x), collapse = " ")))
+        })
+        .data <- .data[- to_concat[[1]], ]
+        # regenerate wrapped/to_concat since .data rows changed
+        wrapped <- !nzchar(.data[[col_to_check]])
+        to_concat <- UU::rle_df(wrapped) |>
+          dplyr::filter(values) |>
+          slider::slide(~.x$start:.x$end)
+      }
+
+      # Create the concatenated fill data
+      to_fill <- purrr::map(to_concat, ~{
+        r <- .x
+        out <- rlang::set_names(vector(length = ncol(.data)), names(.data))
+        for (nm in names(.data)) {
+          out[nm] = trimws(paste0(.data[min(.x) - 1, nm]," ",paste0(unlist(.data[r, nm]), collapse = " ")))
+        }
+        out
+      })
+      # map over the row to fill and fill the data
+      fill_rows <- purrr::map_int(to_concat, 1) - 1
+      for (i in seq_along(to_fill)) {
+        .data[fill_rows[i],] <- as.list(to_fill[[i]])
+      }
+      # remove the wrapped rows
+      .data <- .data[!wrapped,]
+    }
+
   }
   .data
 }
