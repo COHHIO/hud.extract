@@ -8,12 +8,15 @@ Authors@R:
            email = "sholsen@alumni.emory.edu")
 Description: Create useful R objects for working with HUD Export data
 Imports:
-  pdftools,
+  feather,
   purrr,
   readr,
   rlang,
   stringr,
   tibble
+Suggests:
+  pdftools,
+  tabulizer
 License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
     license
 Encoding: UTF-8
