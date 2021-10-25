@@ -143,7 +143,7 @@ hud_translate <- function(x, hash) {
 hud_translate.numeric <- function(x, hash) {
   out <- rep(NA_character_, length(x))
   na <- is.na(x)
-  out[!na] <- purrr::map_chr(x[!na], ~hash[["Text"]][.x == hash[["Value"]]])
+  out[!na] <- purrr::map_chr(x[!na], ~hash[[2]][.x == hash[[1]]])
   out
 }
 #' @title S3 Method for hud_translate
@@ -151,7 +151,7 @@ hud_translate.numeric <- function(x, hash) {
 hud_translate.character <- function(x, hash) {
   out <- rep(NA_real_, length(x))
   na <- is.na(x)
-  out[!na] <- purrr::map_dbl(x[!na], ~hash[["Value"]][.x == hash[["Text"]]])
+  out[!na] <- purrr::map_dbl(x[!na], ~hash[[1]][.x == hash[[2]]])
   out
 }
 
@@ -165,7 +165,7 @@ hud_translations <- list.files(full.names = TRUE, file.path("inst", "export_text
   purrr::map(~
                rlang::new_function(args = rlang::pairlist2(.x = , table = FALSE), body = rlang::expr({
                  hash <- feather::read_feather(system.file("export_text_translations", !!file.path("2022", basename(.x)), package = "hud.extract", mustWork = TRUE))
-                 if (!all(c("Value", "Text") %in% names(hash))) {
+                 if (!"Value" %in% names(hash) || !(is.character(hash[[2]]) && is.numeric(hash[[1]]))) {
                    rlang::warn("Translation table is irregular and isn't supported for translation. Returning table as-is")
                    return(hash)
                  }
