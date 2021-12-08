@@ -5,8 +5,8 @@
 \title{Create hash table functions that transform code specification integers to human-legible characters}
 \usage{
 hud_value_tables(
-  hud_pdf_data,
-  dims,
+  pdf = hud_spec_2022,
+  dims = hud_dimensions(hud_spec_2022),
   .write = TRUE,
   verify = interactive(),
   overwrite = FALSE,
@@ -14,7 +14,7 @@ hud_value_tables(
 )
 }
 \arguments{
-\item{dims}{\code{(list)} output from \code{hud_dimensions}}
+\item{dims}{\code{(list)} output from \code{hud_dimensions}. \emph{Required}}
 
 \item{\code{(list)}}{output from \code{hud_pdf_data}}
 }

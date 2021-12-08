@@ -5,7 +5,7 @@
 \alias{hud_translations}
 \title{Translate HUD Coding of Data Elements}
 \format{
-An object of class \code{list} of length 85.
+An object of class \code{list} of length 88.
 }
 \usage{
 hud_translations

@@ -4,7 +4,7 @@
 \alias{hud_dimensions}
 \title{Set the dimensions of the main content area for the PDF}
 \usage{
-hud_dimensions(file = hud_spec_pdf, pg = 20)
+hud_dimensions(file = hud_spec_2022, pg = 20)
 }
 \arguments{
 \item{file}{\code{(character)} Path to file}
