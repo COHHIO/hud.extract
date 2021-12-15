@@ -8,12 +8,13 @@ Authors@R:
            email = "sholsen@alumni.emory.edu")
 Description: Create useful R objects for working with HUD Export data
 Imports:
-  feather,
-  purrr,
-  readr,
-  rlang,
-  stringr,
-  tibble
+    feather,
+    lifecycle,
+    purrr,
+    readr,
+    rlang,
+    stringr,
+    tibble
 Suggests:
   pdftools,
   tabulizer
@@ -22,4 +23,4 @@ License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1.9001
+RoxygenNote: 7.1.2
