@@ -368,3 +368,11 @@ hud_spec_r_type <- function(hud_spec, outtype = c("chr", "hud", "fun", "typ")[1]
 #     .x
 # })
 # dput(hud_export, file = "../clarity.looker/R/hud_export_2022.R")
+
+# .dir <- file.path("inst", "export_text_translations", "2022")
+# .to_dir <- file.path("..", "HMIS", .dir)
+# dir.create(.to_dir, recursive = TRUE)
+# list.files(full.names = TRUE, .dir) |>
+#   rlang::set_names() |>
+#   purrr::map_chr(~file.path("..", "HMIS", .dir, basename(.x))) |>
+#   purrr::imap_lgl(~file.copy(.y, .x, overwrite = TRUE, recursive = TRUE))
