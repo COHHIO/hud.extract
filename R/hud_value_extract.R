@@ -84,7 +84,8 @@ hud_value_tables <- function(pdf = hud_spec_2022, dims = hud_dimensions(hud_spec
     # Fix character aberrations
     out <- purrr::map_dfc(out, ~{
       stringr::str_replace_all(.x, "â€“", "-") |>
-        stringr::str_replace_all("â€™", "'")
+        stringr::str_replace_all("â€™", "'") |>
+        stringr::str_replace_all("\\\r", " ")
     })
     # Coerce Value to numeric
     if (!stringr::str_detect(.x$titles[1], "VAMCStationNumber$"))
@@ -127,58 +128,4 @@ hud_value_tables <- function(pdf = hud_spec_2022, dims = hud_dimensions(hud_spec
 
 
 
-#' @title Translate Numeric/Character from a Hash Table with columns Value/Text
-#'
-#' @param x \code{(character/numeric)} vector to translate
-#' @param hash \code{(data.frame)} with Value/Text numeric/character corresponding to the value to translate
-#'
-#' @return \code{(numeric/character)} Whichever class is opposite the input vector
-#' @export
 
-hud_translate <- function(x, hash) {
-  UseMethod("hud_translate")
-}
-#' @title S3 Method for hud_translate
-#' @export
-hud_translate.numeric <- function(x, hash) {
-  out <- rep(NA_character_, length(x))
-  na <- is.na(x)
-  out[!na] <- purrr::map_chr(x[!na], ~hash[[2]][.x == hash[[1]]])
-  out
-}
-#' @title S3 Method for hud_translate
-#' @export
-hud_translate.character <- function(x, hash) {
-  out <- rep(NA_real_, length(x))
-  na <- is.na(x)
-  out[!na] <- purrr::map_dbl(x[!na], ~hash[[1]][.x == hash[[2]]])
-  out
-}
-
-#' @title Translate HUD Coding of Data Elements
-#' @description Translate values from HUD Data elements between values or text
-#' @param .x \code{(character/numeric)} The values to translate
-#' @return \code{(character/numeric)} equivalent, depending on the input
-#' @export
-hud_translations <- list.files(full.names = TRUE, file.path("inst", "export_text_translations", "2022")) |>
-  {\(x) {rlang::set_names(x, stringr::str_remove(basename(x), "\\.feather"))}}() |>
-  purrr::map(~
-               rlang::new_function(args = rlang::pairlist2(.x = , table = FALSE), body = rlang::expr({
-                 hash <- feather::read_feather(system.file("export_text_translations", !!file.path("2022", basename(.x)), package = "hud.extract", mustWork = TRUE))
-                 if (!"Value" %in% names(hash) || !(is.character(hash[[2]]) && is.numeric(hash[[1]]))) {
-                   rlang::warn("Translation table is irregular and isn't supported for translation. Returning table as-is")
-                   return(hash)
-                 }
-
-                 if (table) {
-                   out <- hash
-                 } else {
-                   out <- hud_translate(.x, hash)
-                 }
-                 out
-               })
-               )
-  ) |>
-  {\(x) {rlang::list2(
-    !!!x
-  )}}()
