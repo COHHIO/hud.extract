@@ -107,8 +107,8 @@ hud_pdf_data <- function(pdf = hud_spec_2022, font_info = TRUE, opw = "", upw = 
 
 #' @title Extract HUD Export Item Specifications
 #' @description Extract the specifications for each of the HUD Export Items from the HUD Specifications PDF
-#' @param path \code{character/list/tibble} Either a character vector with path to the HUD CSV Spec PDF or output from `hud_pdf_data`
-#' @return \code({list}) of tibbles with specifications from tables in the PDF
+#' @param path \code{(character/list/tibble)} Either a character vector with path to the HUD CSV Spec PDF or output from `hud_pdf_data`
+#' @return \code{(list)} of tibbles with specifications from tables in the PDF
 #' @export
 
 hud_export_specs <- function(path = hud_spec_2022) {

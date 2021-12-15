@@ -7,10 +7,10 @@
 hud_export_specs(path = hud_spec_2022)
 }
 \arguments{
-\item{path}{\code{character/list/tibble} Either a character vector with path to the HUD CSV Spec PDF or output from \code{hud_pdf_data}}
+\item{path}{\code{(character/list/tibble)} Either a character vector with path to the HUD CSV Spec PDF or output from \code{hud_pdf_data}}
 }
 \value{
-\code({list}) of tibbles with specifications from tables in the PDF
+\code{(list)} of tibbles with specifications from tables in the PDF
 }
 \description{
 Extract the specifications for each of the HUD Export Items from the HUD Specifications PDF
