@@ -3,7 +3,7 @@
 #' @param type \code{(character)} One of: \code{`r paste0(eval(rlang::fn_fmls(open_pdfs)$type[[2]]), collapse = ", ")`}
 #' @param year \code{(character/numeric)} to open. Use `"latest"` to return the most recent
 #'
-#' @return
+#' @return \code{(character)} file path invisibly
 #' @export
 #'
 #' @examples
@@ -36,7 +36,7 @@ open_pdfs = function(type = c("csv_specs", "data_dictionarys", "data_standards",
   f <- file.path(fp, f)
   shell.exec(f)
   cli::cli_alert_success(paste0("Opening ", f))
-  f
+  invisible(f)
 }
 
 #' @title Extract a previously downloaded HUD Export archive

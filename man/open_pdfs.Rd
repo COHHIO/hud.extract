@@ -15,7 +15,7 @@ open_pdfs(
 \item{year}{\code{(character/numeric)} to open. Use \code{"latest"} to return the most recent}
 }
 \value{
-
+\code{(character)} file path invisibly
 }
 \description{
 Open stored HUD PDFs
