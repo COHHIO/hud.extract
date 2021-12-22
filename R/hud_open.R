@@ -74,7 +74,7 @@ hud_export_extract <- function(browser_dl_folder = "~/../Downloads", extract_pat
 
 
 
-  if (UU::is_legit(f))
+  if (UU::is_legit(f)) {
     archive::archive_extract(f, path.expand(extract_path))
   } else
     cli::cli_alert("No HUD Export found in ", path.expand(downloads), " with creation time greater than ", moment)
