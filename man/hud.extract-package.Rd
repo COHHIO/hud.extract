@@ -9,7 +9,12 @@
 Create useful R objects for working with HUD Export data
 }
 \author{
-\strong{Maintainer}: Stephen Holsenbeck \email{sholsen@alumni.emory.edu}
+\strong{Maintainer}: Stephen Holsenbeck \email{hmisdataanalyst@cohhio.org}
+
+Authors:
+\itemize{
+  \item Stephen Holsenbeck \email{sholsen@alumni.emory.edu}
+}
 
 }
 \keyword{internal}

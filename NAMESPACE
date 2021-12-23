@@ -3,7 +3,6 @@
 export(col_types)
 export(historical_geocode_pdfs)
 export(hud_dimensions)
-export(hud_export_extract)
 export(hud_export_specs)
 export(hud_geocodes)
 export(hud_pdf_data)

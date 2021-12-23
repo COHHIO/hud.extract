@@ -2,10 +2,14 @@ Package: hud.extract
 Title: Extracts R-friendly Specifications from the HUD Specification PDF
 Version: 0.0.1
 Authors@R: 
-    person(given = "Stephen",
+    c(person(given = "Stephen",
            family = "Holsenbeck",
            role = c("aut", "cre"),
-           email = "sholsen@alumni.emory.edu")
+           email = "hmisdataanalyst@cohhio.org"),
+           person(given = "Stephen",
+           family = "Holsenbeck",
+           role = c("aut"),
+           email = "sholsen@alumni.emory.edu"))
 Description: Create useful R objects for working with HUD Export data
 Imports:
     archive,
