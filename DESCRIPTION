@@ -8,6 +8,7 @@ Authors@R:
            email = "sholsen@alumni.emory.edu")
 Description: Create useful R objects for working with HUD Export data
 Imports:
+    archive,
     feather,
     lifecycle,
     purrr,
@@ -15,6 +16,7 @@ Imports:
     rlang,
     stringr,
     tibble
+Remotes: r-lib/archive
 Suggests:
   pdftools,
   tabulizer
