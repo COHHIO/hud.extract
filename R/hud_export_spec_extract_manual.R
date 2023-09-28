@@ -4,7 +4,7 @@
 hud_spec_2024 <- "https://files.hudexchange.info/resources/documents/HMIS-CSV-Format-Specifications-2024.pdf"
 
 # Export.csv
-Export.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(18:20))
+# Export.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(18:20))
 
 # reformat the third page
 my_list <- cbind("", "", "", "", Export.csv[[3]])
@@ -81,7 +81,7 @@ Export <- result_df
 
 
 # Organization.csv
-Organization.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(20))
+# Organization.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(20))
 Organization <- as.data.frame(Organization.csv)
 
 # Remove the first row and set it as column names
@@ -89,7 +89,7 @@ colnames(Organization) <- unlist(Organization[1, ])
 Organization <- Organization[-1, ]
 
 # User.csv
-User.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(20:21))
+# User.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(20:21))
 
 
 #### Code for dealing with 6 columns at once
@@ -186,67 +186,67 @@ process_matrix <- function(matrix_csv) {
 # Grab table data from the rest
 
 # Project.csv
-Project.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(21:22))
+# Project.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(21:22))
 
 # Funder.csv
-Funder.csv <- tabulizer::extract_areas(hud_spec_2024, pages = 22)
+# Funder.csv <- tabulizer::extract_areas(hud_spec_2024, pages = 22)
 
 # ProjectCoC.csv
-ProjectCoC.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(22:23))
+# ProjectCoC.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(22:23))
 
 # Inventory.csv
-Inventory.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(23:24))
+# Inventory.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(23:24))
 
 # Affiliation.csv
-Affiliation.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(24))
+# Affiliation.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(24))
 
 # HMISParticipation.csv
-HMISParticipation.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(24))
+# HMISParticipation.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(24))
 
 # CEParticipation.csv
-CEParticipation.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(25))
+# CEParticipation.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(25))
 
 # Client.csv
-Client.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(26:28))
+# Client.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(26:28))
 
 # Enrollment.csv
-Enrollment.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(29:31))
+# Enrollment.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(29:31))
 
 # Exit.csv
-Exit.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(32:34))
+# Exit.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(32:34))
 
 # IncomeBenefits.csv
-IncomeBenefits.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(34:36))
+# IncomeBenefits.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(34:36))
 
 # HealthAndDV.csv
-HealthAndDV.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(37))
+# HealthAndDV.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(37))
 
 # EmploymentEducation.csv
-EmploymentEducation.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(38))
+# EmploymentEducation.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(38))
 
 # Disabilities.csv
-Disabilities.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(39))
+# Disabilities.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(39))
 
 # Services.csv
-Services.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(40:41))
+# Services.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(40:41))
 
 # CurrentLivingSituation.csv
-CurrentLivingSituation.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(41:42))
+# CurrentLivingSituation.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(41:42))
 
 # Assessment.csv
-Assessment.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(42))
+# Assessment.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(42))
 
 # AssessmentQuestions.csv
-AssessmentQuestions.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(42:43))
+# AssessmentQuestions.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(42:43))
 
 # AssessmentResults.csv
-AssessmentResults.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(43))
+# AssessmentResults.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(43))
 
 # Events.csv
-Events.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(43:44))
+# Events.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(43:44))
 
 # YouthEducationStatus.csv
-YouthEducationStatus.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(44))
+# YouthEducationStatus.csv <- tabulizer::extract_areas(hud_spec_2024, pages = c(44))
 
 
 

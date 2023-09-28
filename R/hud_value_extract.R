@@ -9,7 +9,7 @@ hud_pdf_table <- function(hud_pdf_data) {
 #' @param pg \code{(numeric)} Page number to use. Pages with a table filling the entire content will provide the most accurate boundaries of the main content area.
 #' @return \code{(named list)} with X & Y minimums and maximums
 #' @export
-hud_dimensions <- function(file = hud_spec_2022, pg = 20) {
+hud_dimensions <- function(file = hud_spec_2024, pg = 35) {
   setNames(as.list(tabulizer::locate_areas(file, pages = pg)[[1]]),
            c("y_min", "x_min", "y_max", "x_max"))
 }
@@ -20,7 +20,7 @@ hud_dimensions <- function(file = hud_spec_2022, pg = 20) {
 #' @param dims \code{(list)} output from `hud_dimensions`. *Required*
 #' @export
 
-hud_value_tables <- function(pdf = hud_spec_2022, dims = hud_dimensions(hud_spec_2022), .write = TRUE, verify = interactive(), overwrite = FALSE, path = file.path("data", "public", "export_text_translations")) {
+hud_value_tables <- function(pdf = hud_spec_2024, dims = hud_dimensions(hud_spec_2024), .write = TRUE, verify = interactive(), overwrite = TRUE, path = file.path("inst", "export_text_translations", "2024")) {
   tbl <- hud_pdf_table(hud_pdf_data(pdf))
   app_begin <- dplyr::filter(tbl, stringr::str_detect(text, "Appendix|^B$") & stringr::str_detect(font_name, "Light$")) |>
     {\(x) {UU::smode(x$pg)}}()
@@ -34,7 +34,8 @@ hud_value_tables <- function(pdf = hud_spec_2022, dims = hud_dimensions(hud_spec
   titles <- dplyr::filter(appendix, font_size == title_size) |>
     dplyr::group_by(pg, y) |>
     dplyr::summarise(titles = paste0(text, collapse = " "), .groups = "keep") |>
-    dplyr::filter(stringr::str_detect(titles, "^Notes$", negate = TRUE))
+    dplyr::filter(stringr::str_detect(titles, "^Notes$", negate = TRUE)) |>
+    dplyr::filter(titles != "3.12.1 Living Situation Option List")
 
 
   value_tables <- slider::slide(titles, .before = 1L, .complete = TRUE, ~{
