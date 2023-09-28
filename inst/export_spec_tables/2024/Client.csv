@@ -1,0 +1,80 @@
+"Name","DE#","Type","List","Null","Notes"
+"PersonalID","5.08","S32","","","Unique identifier"
+"FirstName","3.01.1","S50","","Y","See notes in Hash Status section re: field
+sizes for hashed data."
+"MiddleName","3.01.2","S50","","Y","See notes in Hash Status section re: field
+sizes for hashed data."
+"LastName","3.01.3","S50","","Y","See notes in Hash Status section re: field
+sizes for hashed data."
+"NameSuffix","3.01.4","S50","","Y",""
+"NameDataQuality","3.01.5","I","3.01.5","",""
+"SSN5","3.02.1","S9","","Y","See notes in Hash Status section re: field
+sizes for hashed data.
+The letter x is the only permissible non-
+numeric character and should be used to
+indicate the position of omitted digits
+^[0-9xX]{9}$6"
+"SSNDataQuality","3.02.2","I","3.02.2","",""
+"DOB","3.03.1","D","","Y",""
+"DOBDataQuality","3.03.2","I","3.03.2","",""
+"AmIndAKNative","3.04.1","I","1.10","","1 = American Indian, Alaska Native, or
+Indigenous
+0 = (This race not selected.)"
+"Asian","3.04.1","I","1.10","","1 = Asian or Asian American
+0 = (This race/ethnicity not selected.)"
+"BlackAfAmerican","3.04.1","I","1.10","","1 = Black, African American, or African
+0 = (This race/ethnicity not selected.)"
+"HispanicLatinaeo","3.04.1","I","1.10","","1 = Hispanic/Latina/e/o
+0 = (This race/ethnicity not selected.)"
+"MidEastNAfrican","3.04.1","I","1.10","","1 = Middle Eastern or North African
+0 = (This race/ethnicity not selected.)"
+"NativeHIPacific","3.04.1","I","1.10","","1 = Native Hawaiian or Pacific Islander
+0 = (This race/ethnicity not selected.)"
+"White","3.04.1","I","1.10","","1 = White
+0 = (This race/ethnicity not selected.)"
+"RaceNone","3.04.1","I","1.6","Y","Non-null only if all other race fields = 0 or
+99"
+"AdditionalRaceEthnici","3.04.2","S100","","Y",""
+"ty","","","","",""
+"Woman","3.06.1","I","1.10","","1 = Woman (Girl, if child)
+0 = (This option not selected.)"
+"Man","3.06.1","I","1.10","","1 = Man (Boy, if child)
+0 = (This option not selected.)"
+"NonBinary","3.06.1","I","1.10","","1 = Non-Binary
+0 = (This option not selected.)"
+"CulturallySpecific","3.06.1","I","1.10","","1 = Culturally Specific Identity (e.g., Two-
+Spirit)
+0 = (This option not selected.)"
+"Transgender","3.06.1","I","1.10","","1 = Transgender
+0 = (This option not selected.)"
+"Questioning","3.06.1","I","1.10","","1 = Questioning
+0 = (This option not selected.)"
+"DifferentIdentity","3.06.1","I","1.10","","1 = Different Identity
+0 = (This option not selected.)"
+"GenderNone","3.06.1","I","1.6","Y","Non-null only if all other gender fields = 0
+or 99"
+"DifferentIdentityText","3.06.A","S100","","Y","Non-null if DifferentIdentity=1"
+"VeteranStatus","3.07.1","I","1.8","","Export 99 (Data not collected) for all
+clients, including minors, for whom there
+is no Veteran Status data."
+"YearEnteredService","V1.1","I","","Y","Values between 1920 and the current year
+^(19[2-8][0-9]|199[0-
+9]|20[01][0-9]|202[01])$7"
+"YearSeparated","V1.2","I","","Y","Values between 1920 and the current year
+^(19[2-8][0-9]|199[0-
+9]|20[01][0-9]|202[01])$$"
+"WorldWarII","V1.3","I","1.8","Y",""
+"KoreanWar","V1.4","I","1.8","Y",""
+"VietnamWar","V1.5","I","1.8","Y",""
+"DesertStorm","V1.6","I","1.8","Y",""
+"AfghanistanOEF","V1.7","I","1.8","Y",""
+"IraqOIF","V1.8","I","1.8","Y",""
+"IraqOND","V1.9","I","1.8","Y",""
+"OtherTheater","V1.10","I","1.8","Y",""
+"MilitaryBranch","V1.11","I","V1.11","Y",""
+"DischargeStatus","V1.12","I","V1.12","Y",""
+"DateCreated","","T","","",""
+"DateUpdated","","T","","",""
+"UserID","","S32","","",""
+"DateDeleted","","T","","Y",""
+"ExportID","","S32","","","Must match the ExportID in Export.csv"

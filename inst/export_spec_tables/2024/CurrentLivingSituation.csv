@@ -1,0 +1,27 @@
+"Name","DE#","Type","List","Null","Notes"
+"CurrentLivingSitID","","S32","","","Unique identifier"
+"EnrollmentID","","S32","","",""
+"PersonalID","","S32","","",""
+"InformationDate","4.12.1","D","","",""
+"CurrentLivingSituation","4.12.2","I","3.12","",""
+"CLSSubsidyType","4.12.A","I","3.12.A","Y","Null unless CurrentLivingSItuation =
+435"
+"VerifiedBy","4.12.3","S100","","Y","Null unless ProjectType = 14"
+"LeaveSituation14Days","4.12.B","I","1.8","Y","Null unless CurrentLivingSituation in
+215, 206, 207, 225, 204, 205, 302,
+329, 314, 332, 336, 335, 410, 435,
+421, 411"
+"SubsequentResidence","4.12.C","I","1.8","Y","Null unless LeaveSituation14Days =
+1"
+"ResourcesToObtain","4.12.D","I","1.8","Y","Null unless LeaveSituation14Days =
+1"
+"LeaseOwn60Day","4.12.E","I","1.8","Y","Null unless LeaveSituation14Days =
+1"
+"MovedTwoOrMore","4.12.F","I","1.8","Y","Null unless LeaveSituation14Days =
+1"
+"LocationDetails","4.12.4","S250","","Y",""
+"DateCreated","","T","","",""
+"DateUpdated","","T","","",""
+"UserID","","S32","","",""
+"DateDeleted","","T","","Y",""
+"ExportID","","S32","","","Must match ExportID in Export.csv"

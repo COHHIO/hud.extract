@@ -1,0 +1,24 @@
+"Name","DE#","Type","List","Null","Notes"
+"InventoryID","","S32","","","Unique identifier"
+"ProjectID","","S32","","","Must match a ProjectID
+in ProjectCoC.csv"
+"CoCCode","2.07.3","S6","","","Must match a CoCCode
+in ProjectCoC.csv for the
+same ProjectID"
+"HouseholdType","2.07.4","I","2.07.4","",""
+"Availability","2.07.6","I","2.07.6","Y","Null unless Project.csv
+ProjectType = 0 or 1"
+"UnitInventory","2.07.15","I","","",""
+"BedInventory","2.07.14","I","","",""
+"CHVetBedInventory","2.07.7","I","","Y",""
+"YouthVetBedInventory","2.07.8","I","","Y",""
+"VetBedInventory","2.07.9","I","","Y",""
+"CHYouthBedInventory","2.07.10","I","","Y",""
+"YouthBedInventory","2.07.11","I","","Y",""
+"CHBedInventory","2.07.12","I","","Y",""
+"OtherBedInventory","2.07.13","I","","Y",""
+"ESBedType","2.07.5","I","2.07.5","Y","Null unless Project.csv
+ProjectType = 0 or 1"
+"InventoryStartDate","2.07.1","D","","",""
+"InventoryEndDate","2.07.2","D","","Y","Must match the
+ExportID in Export.csv"

@@ -1,0 +1,80 @@
+DE.,Name,Type,List,Null,Notes
+,IncomeBenefitsID,S32,,,Unique identifier
+,EnrollmentID,S32,,,
+,PersonalID,S32,,,
+*,InformationDate,D,,,
+4.02.2,IncomeFromAnySource,I,1.8,Y,
+4.02.18,TotalMonthlyIncome,M+,,Y,
+4.02.3,Earned,I,1.7,Y,
+4.02.A,EarnedAmount,M+,,Y,
+4.02.4,Unemployment,I,1.7,Y,
+4.02.B,UnemploymentAmount,M+,,Y,
+4.02.5,SSI,I,1.7,Y,
+4.02.C,SSIAmount,M+,,Y,
+4.02.6,SSDI,I,1.7,Y,
+4.02.D,SSDIAmount,M+,,Y,
+4.02.7,VADisabilityService,I,1.7,Y,
+4.02.E,VADisabilityServiceAmount,M+,,Y,
+4.02.8,VADisabilityNonService,I,1.7,Y,
+4.02.F,VADisabilityNonServiceAmount,M+,,Y,
+4.02.9,PrivateDisability,I,1.7,Y,
+4.02.G,PrivateDisabilityAmount,M+,,Y,
+4.02.10,WorkersComp,I,1.7,Y,
+4.02.H,WorkersCompAmount,M+,,Y,
+4.02.11,TANF,I,1.7,Y,
+4.02.I,TANFAmount,M+,,Y,
+4.02.12,GA,I,1.7,Y,
+4.02.J,GAAmount,M+,,Y,
+4.02.13,SocSecRetirement,I,1.7,Y,
+4.02.K,SocSecRetirementAmount,M+,,Y,
+4.02.14,Pension,I,1.7,Y,
+4.02.L,PensionAmount,M+,,Y,
+4.02.15,ChildSupport,I,1.7,Y,
+4.02.M,ChildSupportAmount,M+,,Y,
+4.02.16,Alimony,I,1.7,Y,
+4.02.N,AlimonyAmount,M+,,Y,
+4.02.17,OtherIncomeSource,I,1.7,Y,
+4.02.O,OtherIncomeAmount,M+,,Y,
+4.02.P,OtherIncomeSourceIdentify,S50,,Y,Null unless 4.02.17 = 1
+4.03.2,BenefitsFromAnySource,I,1.8,Y,
+4.03.3,SNAP,I,1.7,y,
+4.03.4,WIC,I,1.7,Y,
+4.03.5,TANFChildCare,I,1.7,Y,
+4.03.6,TANFTransportation,I,1.7,Y,
+4.03.7,OtherTANF,I,1.7,Y,
+4.03.8,OtherBenefitsSource,I,1.7,Y,
+4.03.A,OtherBenefitsSourceIdentify,S50,,Y,Null unless 4.03.8 = 1
+4.04.2,InsuranceFromAnySource,I,1.8,Y,
+4.04.3,Medicaid,I,1.7,Y,
+4.04.3A,NoMedicaidReason,I,4.04.A,Y,Null unless 4.04.3 = 0
+4.04.4,Medicare,I,1.7,Y,
+4.04.4A,NoMedicareReason,I,4.04.A,Y,Null unless 4.04.4 = 0
+4.04.5,SCHIP,I,1.7,Y,
+4.04.5A,NoSCHIPReason,I,4.04.A,Y,Null unless 4.04.5 = 0
+4.04.6,VAMedicalServices,I,1.7,Y,
+4.04.6A,NoVAMedReason,I,4.04.A,Y,Null unless 4.04.6 = 0
+4.04.7,EmployerProvided,I,1.7,Y,
+4.04.7A,NoEmployerProvidedReason,I,4.04.A,Y,Null unless 4.04.7 = 0
+4.04.8,COBRA,I,1.7,Y,
+4.04.8A,NoCOBRAReason,I,4.04.A,Y,Null unless 4.04.8 = 0
+4.04.9,PrivatePay,I,1.7,Y,
+4.04.9A,NoPrivatePayReason,I,4.04.A,Y,Null unless 4.04.9 = 0
+4.04.10,StateHealthIns,I,1.7,Y,
+4.04.10A,NoStateHealthInsReason,I,4.04.A,Y,Null unless 4.04.10 = 0
+4.04.11,IndianHealthServices,I,1.7,Y,
+4.04.11A,NoIndianHealthServicesReason,I,4.04.A,Y,Null unless 4.04.11 = 0
+4.04.12,OtherInsurance,I,1.7,Y,
+4.04.12A,OtherInsuranceIdentify,S50,,Y,Null unless 4.04.12 = 1
+W3.2,HIVAIDSAssistance,I,1.8,Y,
+W3.A,NoHIVAIDSAssistanceReason,I,W3,Y,Null unless W3.2 = 0
+W3.3,ADAP,I,1.8,Y,
+W3.B,NoADAPReason,I,W3,Y,Null unless W3.3 = 0
+W3.4,RyanWhiteMedDent,I,1.8,Y,
+W3.C,NoRyanWhiteReason,,W3,Y,Null unless W3.4 = 0
+P4.1,ConnectionWithSOAR,I,1.8,Y,
+,DataCollectionStage,I,5.03.1,,
+,DateCreated,T,,,
+,DateUpdated,T,,,
+,UserID,S32,,,
+,DateDeleted,T,,Y,
+NA,ExportID,S32,NA,NA,NA

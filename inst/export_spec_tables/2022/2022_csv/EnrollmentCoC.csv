@@ -1,0 +1,14 @@
+DE.,Name,Type,List,Null,Notes
+,EnrollmentCoCID,S32,,,Unique identifier
+,EnrollmentID,S32,,,
+,HouseholdID,S32,,,
+,ProjectID,S32,,,Must match ProjectID in ProjectCoC.csv
+,PersonalID,S32,,,
+3.16.1,InformationDate,D,,,
+3.16.2,CoCCode,S6,,,Must match a record in ProjectCoC.csv
+,DataCollectionStage,I,5.03.1,,
+,DateCreated,T,,,
+,DateUpdated,T,,,
+,UserID,S32,,,
+,DateDeleted,T,,Y,
+,ExportID,S32,,,Must match ExportID in Export.csv

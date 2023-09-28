@@ -1,0 +1,10 @@
+DE.,Name,Type,List,Null,Notes
+2.01.1,OrganizationID,S32,,,Unique identifier
+2.01.2,OrganizationName,S50,,,
+2.01.3,VictimServiceProvider,I,1.7,,
+,OrganizationCommonName,S50,,Y,
+,DateCreated,T,,,
+,DateUpdated,T,,,
+,UserID,S32,,,
+,DateDeleted,T,,Y,
+,ExportID,S32,,,Must match record in Export.csv

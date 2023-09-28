@@ -1,0 +1,13 @@
+DE.,Name,Type,List,Null,Notes
+,FunderID,S32,,,Unique identifier
+,ProjectID,S32,,,Must match a record in Project.csv
+2.06.1,Funder,I,2.06.1,,
+2.06.A,OtherFunder,S50,,Y,Required if 2.06.1 = 46
+2.06.2,GrantID,S32,,,
+2.06.3,StartDate,D,,,
+2.06.4,EndDate,D,,Y,
+,DateCreated,T,,,
+,DateUpdated,T,,,
+,UserID,S32,,,
+,DateDeleted,T,,Y,
+,ExportID,S32,,,Must match the ExportID in Export.csv

@@ -1,0 +1,21 @@
+"Name","DE#","Type","List","Null","Notes"
+"ProjectCoCID","","S32","","","Unique identifier"
+"ProjectID","","S32","","","Must match a ProjectID in Project.csv"
+"CoCCode","2.03.1","S6","","","Two letters, a dash, and 3 numbers
+^[a-zA-Z]{2}-[0-9]{3}$"
+"Geocode3","2.03.2","S6","","","Limited to six digits
+^[0-9]{6}$"
+"Address1","2.03.3","S100","","Y",""
+"Address2","2.03.4","S100","","Y",""
+"City","2.03.5","S50","","Y",""
+"State","2.03.6","S2","","Y","Limited to USPS-defined two-letter
+abbreviations4
+^[a-zA-Z]{2}$"
+"ZIP","2.03.7","S5","","Y","Limited to five digits
+^[0-9]{5}$"
+"GeographyType","2.03.8","I","2.03.4","Y",""
+"DateCreated","","T","","",""
+"DateUpdated","","T","","",""
+"UserID","","S32","","",""
+"DateDeleted","","T","","Y",""
+"ExportID","","S32","","","Must match the ExportID in Export.csv"

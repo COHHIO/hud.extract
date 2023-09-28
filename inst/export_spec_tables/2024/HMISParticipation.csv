@@ -1,0 +1,13 @@
+"Name","DE#","Type","List","Null","Notes"
+"HMISParticipationID","","S32","","","Unique identifier"
+"ProjectID","","S32","","","Must match a ProjectID in
+Project.csv"
+"HMISParticipationType","2.08.1","I","2.08.1","",""
+"HMISParticipationStatusStartDate","2.08.2","D","","",""
+"HMISParticipationStatusEndDate","2.08.3","D","","Y",""
+"DateCreated","","T","","",""
+"DateUpdated","","T","","",""
+"UserID","","S32","","",""
+"DateDeleted","","T","","Y",""
+"ExportID","","S","","","Must match the ExportID in
+Export.csv"

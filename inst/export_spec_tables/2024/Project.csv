@@ -1,0 +1,21 @@
+"Name","DE#","Type","List","Null","Notes"
+"ProjectID","2.02.1","S32","","","Unique identifier"
+"OrganizationID","2.01.1","S32","","","Must match a record in
+Organization.csv"
+"ProjectName","2.02.2","S200","","",""
+"ProjectCommonName","","S200","","Y",""
+"OperatingStartDate","2.02.3","D","","",""
+"OperatingEndDate","2.02.4","D","","Y",""
+"ContinuumProject","2.02.5","I","1.10","",""
+"ProjectType","2.02.6","I","2.02.6","Y","May be null if ContinuumProject <>
+1"
+"HousingType","2.02.D","I","2.02.D","Y",""
+"RRHSubType","2.02.A","I","2.02.A","Y",""
+"ResidentialAffiliation","2.02.B","I","1.10","Y","Non-null if ProjectType = 6 or
+(ProjectType = 13 and RRHSubType
+= 1)"
+"TargetPopulation","2.02.7","I","2.02.7","",""
+"HOPWAMedAssistedLivingFac","2.02.8","I","2.02.8","Y","Used for the HIC; a count of active
+clients2 on the date of the PIT
+Count
+Must match ExportID in Export.csv"

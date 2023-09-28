@@ -1,0 +1,14 @@
+DE.,Name,Type,List,Null,Notes
+,AssessmentQuestionID,S32,,,Unique identifier
+,AssessmentID,S32,,,
+,EnrollmentID,S32,,,
+,PersonalID,S32,,,
+,AssessmentQuestionGroup,S250,,Y,Locally determined
+,AssessmentQuestionOrder,I,,Y,Locally determined
+4.19.5,AssessmentQuestion,S250,*,,Cannot be NULL if
+4.19.A,AssessmentAnswer,S500,*,Y,Locally determined
+,DateCreated,T,,,
+,DateUpdated,T,,,
+,UserID,S32,,,
+,DateDeleted,T,,Y,
+,ExportID,S32,,,Must match ExportID  in Export.cs

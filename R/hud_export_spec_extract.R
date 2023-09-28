@@ -84,20 +84,26 @@ fix_footnotes <- function(.data) {
   .data
 }
 
-#' @title The most recent HUD Specifications PDF
+#' @title 2024 HUD Specifications PDF
+#' @export
+
+hud_spec_2024 <- "https://files.hudexchange.info/resources/documents/HMIS-CSV-Format-Specifications-2024.pdf"
+
+
+#' @title 2022 HUD Specifications PDF
 #' @export
 
 hud_spec_2022 <- "https://hudhdx.info/Resources/Vendors/HMIS_CSV_Specifications_FY2022_v1.2_clean.pdf"
 
-#' @title 2021 HUD Specifications PDF
+#' @title 2020 HUD Specifications PDF
 #' @export
 
 hud_spec_2020 <- "https://www.hudhdx.info/Resources/Vendors/HMIS%20CSV%20Specifications%20FY2020%20v1.8.pdf"
 
-#' @title Create a pdf data list from the HUD 2022 HMIS Specs
+#' @title Create a pdf data list from the HUD 2024 HMIS Specs
 #' @inherit pdftools::pdf_data
 #' @export
-hud_pdf_data <- function(pdf = hud_spec_2022, font_info = TRUE, opw = "", upw = "") {
+hud_pdf_data <- function(pdf = hud_spec_2024, font_info = TRUE, opw = "", upw = "") {
   pdftools::pdf_data(pdf, font_info = TRUE)
 }
 
@@ -111,12 +117,17 @@ hud_pdf_data <- function(pdf = hud_spec_2022, font_info = TRUE, opw = "", upw = 
 #' @return \code{(list)} of tibbles with specifications from tables in the PDF
 #' @export
 
-hud_export_specs <- function(path = hud_spec_2022) {
+hud_export_specs <- function(path = hud_spec_2024) {
+  # browser()
   pdf_data <- suppressWarnings(hud_pdf_data(path))
   hud_specs_tbl <- dplyr::bind_rows(pdf_data, .id = "Page")
-  numbering_starts_on_pg <- which(purrr::map_lgl(pdf_data[-1], ~{
-    !is.na(as.numeric(dplyr::slice_max(.x, y)$text))
-  }))[1]
+
+  numbering_starts_on_pg <- 0
+  # numbering_starts_on_pg <- which(purrr::map_lgl(pdf_data[-1], ~{
+  #   !is.na(as.numeric(dplyr::slice_max(.x, y)$text))
+  # }))[1]
+
+  # table of contents data
   toc <- hud_specs_tbl[which(stringr::str_detect(hud_specs_tbl$text,"\\.{10}")),]$Page |>
     unique() |>
     as.numeric()
@@ -136,7 +147,7 @@ hud_export_specs <- function(path = hud_spec_2022) {
   hud_specs_tbl <- dplyr::mutate(hud_specs_tbl, Page = as.numeric(Page))
   purrr::imap(hud_export_pgs, ~{
     message(.y)
-
+    browser()
     pg <- .x
     ni <- hud_export_pgs[which(names(hud_export_pgs) %in% .y) + 1]
     if (!UU::is_legit(ni) || .y == "YouthEducationStatus.csv")
@@ -155,7 +166,7 @@ hud_export_specs <- function(path = hud_spec_2022) {
     min_y <- min(fr$y)
     max_x <- max(.data$x)
     end_token <- purrr::when(.y,
-                         grepl("Export", .) ~ "HashStatus",
+                         grepl("Export", .) ~ "ImplementationID",
                              ~ "ExportID"
     )
     # Last row of table

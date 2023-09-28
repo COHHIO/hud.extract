@@ -1,0 +1,22 @@
+"Name","DE#","Type","List","Null","Notes"
+"CEParticipationID","","S32","","","Unique identifier"
+"ProjectID","","S32","","","Must match a ProjectID in
+Project.csv"
+"AccessPoint","2.09.1","I","1.10","",""
+"PreventionAssessment","2.09.A","I","1.10","Y","Non-null if 2.09.1 = 1. If option not
+selected, should be set to 0"
+"CrisisAssessment","2.09.A","I","1.10","Y","Non-null if 2.09.1 = 1. If option not
+selected, should be set to 0"
+"HousingAssessment","2.09.A","I","1.10","Y","Non-null if 2.09.1 = 1. If option not
+selected, should be set to 0"
+"DirectServices","2.09.A","I","1.10","Y","Non-null if 2.09.1 = 1. If option not
+selected, should be set to 0"
+"ReceivesReferrals","2.09.2","I","1.10","",""
+"CEParticipationStatusStartDate","2.09.3","D","","",""
+"CEParticipationStatusEndDate","2.09.4","D","","Y",""
+"DateCreated","","T","","",""
+"DateUpdated","","T","","",""
+"UserID","","S32","","",""
+"DateDeleted","","T","","Y",""
+"ExportID","","S","","","Must match the ExportID in
+Export.csv"

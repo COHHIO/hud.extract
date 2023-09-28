@@ -1,0 +1,18 @@
+DE.,Name,Type,List,Null,Notes
+,CurrentLivingSitID,S32,,,Unique identifier
+,EnrollmentID,S32,,,
+,PersonalID,S32,,,
+4.12.1,InformationDate,D,,,
+4.12.2,CurrentLivingSituation,I,3.12,,
+4.12.3,VerifiedBy,S100,,Y,Null unless ProjectType = 14
+4.12.A,LeaveSituation14Days,I,1.8,Y,Null unless CurrentLivingSituation in
+4.12.B,SubsequentResidence,I,1.8,Y,Null unless LeaveSituation14Days =
+4.12.C,ResourcesToObtain,I,1.8,Y,Null unless LeaveSituation14Days =
+4.12.D,LeaseOwn60Day,I,1.8,Y,Null unless LeaveSituation14Days =
+4.12.E,MovedTwoOrMore,I,1.8,Y,Null unless LeaveSituation14Days =
+4.12.4,LocationDetails,S250,,Y,
+,DateCreated,T,,,
+,DateUpdated,T,,,
+,UserID,S32,,,
+,DateDeleted,T,,Y,
+,ExportID,S32,,,Must match ExportID  in Export.csv

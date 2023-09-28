@@ -1,0 +1,42 @@
+DE.,Name,Type,List,Null,Notes
+5.08,PersonalID,S32,,,Unique identifier
+3.01.1,FirstName,S50,,Y,See notes in Hash Status section re: field
+3.01.2,MiddleName,S50,,Y,See notes in Hash Status section re: field
+3.01.3,LastName,S50,,Y,See notes in Hash Status section re: field
+3.01.4,NameSuffix,S50,,Y,
+3.01.5,NameDataQuality,I,3.01.5,,
+3.02.1,SSN,S9,,Y,See notes in Hash Status section re: field
+3.02.2,SSNDataQuality,I,3.02.2,,
+3.03.1,DOB,D,,Y,
+3.03.2,DOBDataQuality,I,3.03.2,,
+3.04.1,AmIndAKNative,I,1.7,,"1 = American Indian, Alaska Native, or"
+3.04.1,Asian,I,1.7,,1 = Asian or Asian American
+3.04.1,BlackAfAmerican,I,1.7,,"1 = Black, African American, or African"
+3.04.1,NativeHIPacific,I,1.7,,1 = Native Hawaiian or Pacific Islander
+3.04.1,White,I,1.7,,1 = White
+3.04.1,RaceNone,I,1.6,Y,Non-null only if all other race fields = 0 or
+3.05.1,Ethnicity,I,3.05.1,,
+3.06.1,Female,I,1.7,,1 = Female
+3.06.1,Male,I,1.7,,1 = Male
+3.06.1,NoSingleGender,I,1.7,,1 = A gender other than singularly female
+3.06.1,Transgender,I,1.7,,1 = Transgender
+3.06.1,Questioning,I,1.7,,1 = Questioning
+3.06.1,GenderNone,1,1.6,Y,Non-null only if all other gender fields = 0
+3.07.1,VeteranStatus,I,1.8,,Export 99 (Data not collected) for all
+V1.1,YearEnteredService,I,,Y,Values between 1920 and the current year
+V1.2,YearSeparated,I,,Y,Values between 1920 and the current year
+V1.3,WorldWarII,I,1.8,Y,
+V1.4,KoreanWar,I,1.8,Y,
+V1.5,VietnamWar,I,1.8,Y,
+V1.6,DesertStorm,I,1.8,Y,
+V1.7,AfghanistanOEF,I,1.8,Y,
+V1.8,IraqOIF,I,1.8,Y,
+V1.9,IraqOND,I,1.8,Y,
+V1.10,OtherTheater,I,1.8,Y,
+V1.11,MilitaryBranch,I,V1.11,Y,
+V1.12,DischargeStatus,I,V1.12,Y,
+,DateCreated,T,,,
+,DateUpdated,T,,,
+,UserID,S32,,,
+,DateDeleted,T,,Y,
+,ExportID,S32,,,Must match the ExportID in Export.csv

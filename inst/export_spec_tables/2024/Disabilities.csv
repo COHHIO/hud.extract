@@ -1,0 +1,27 @@
+"Name","DE#","Type","List","Null","Notes"
+"DisabilitiesID","","S32","","","Unique identifier"
+"EnrollmentID","","S32","","",""
+"PersonalID","","S32","","",""
+"InformationDate","","D","","",""
+"DisabilityType","","I","1.3","",""
+"DisabilityResponse","","I","(see","","For DisabilityType
+• 10 (Substance Use Disorder) –
+list 4.10.2
+• Any other – list 1.8"
+"IndefiniteAndImpairs","","I","1.8","Y",""
+"TCellCountAvailable","W4.2","I","1.8","Y","Null unless DisabilityType = 8
+AND DisabilityResponse=1"
+"TCellCount","W4.A","I","","Y","Null unless W4.2 = 1"
+"TCellSource","W4.B","I","W4.B","Y","Null unless W4.A is not null"
+"ViralLoadAvailable","W4.3","I","W4.3","Y","Null unless DisabilityType = 8
+AND DisabilityResponse=1"
+"ViralLoad","W4.C","I","","Y","Null unless W4.3 = 1"
+"ViralLoadSource","W4.D","I","W4.B","Y","Null unless W4.C is not null"
+"AntiRetroviral","W6.2","I","1.8","Y","Null unless DisabilityType = 8
+AND DisabilityResponse=1"
+"DataCollectionStage","","I","5.03.1","",""
+"DateCreated","","T","","",""
+"DateUpdated","","T","","",""
+"UserID","","S32","","",""
+"DateDeleted","","T","","Y",""
+"ExportID","","S32","","","Must match ExportID in Export.csv"

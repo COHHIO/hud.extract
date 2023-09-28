@@ -1,0 +1,19 @@
+Name,Type,List,Null,Notes
+ExportID,S32,,,Unique identifier
+SourceType,I,,,Identifies whether the source database is a
+SourceID,S32,,Y,"If SourceType = 1, this field may not be null and must"
+SourceName,S50,,Y,If the source database is not an HMIS implementation
+SourceContactFirst,S50,,Y,The first name of the user generating the export.
+SourceContactLast,S50,,Y,The last name of the user generating the export.
+SourceContactPhone,S10,,Y,The phone number of the user generating the export.
+SourceContactExtension,S5,,Y,The phone extension of the user generating the
+SourceContactEmail,S320,,Y,"The email address of the user generating the export, if"
+ExportDate,T,,,The date and time that the export process was
+ExportStartDate,D,,,The user-entered start date for the export period
+ExportEndDate,D,,,The user-entered end date for the export period; the
+SoftwareName,S50,,,The name of the software generating the export.
+SoftwareVersion,S50,,Y,"The version number of the software, if applicable."
+CSVVersion,S50,,Y,"The version number of the CSV Specification, if"
+ExportPeriodType,I,1.1,,
+ExportDirective,I,1.2,,
+HashStatus,I,1.5,,

@@ -1,0 +1,44 @@
+DE.,Name,Type,List,Null,Notes
+,ExitID,S32,,,Unique identifier
+,EnrollmentID,S32,,,
+,PersonalID,S32,,,
+3.11.1,ExitDate,D,,,
+3.12.1,Destination,I,3.12.1,,
+3.12.A,OtherDestination,S50,,Y,Null unless Destination = 17
+W5.1,HousingAssessment,I,W5.1,Y,
+W5.A& .B,SubsidyInformation,I,W5.A,Y,Includes data for W5.A and W5.B.
+R17.1,ProjectCompletionStatus,I,R17.1,Y,
+R17.A,EarlyExitReason,I,R17.A,Y,Null unless R17.1 = 3
+R15.1,ExchangeForSex,I,1.8,Y,
+R15.A,ExchangeForSexPastThreeMonths,I,1.8,Y,Null unless R15.1 = 1
+R15.B,CountOfExchangeForSex,I,R15.B,Y,Null unless R15.1 = 1
+R15.C,AskedOrForcedToExchangeForSex,I,1.8,Y,Null unless R15.1 = 1
+R15.D,AskedOrForcedToExchangeForSexPastThreeMonths,I,1.8,Y,Null unless R15.C = 1
+R16.1,WorkplaceViolenceThreats,I,1.8,Y,
+R16.2,WorkplacePromiseDifference,I,1.8,Y,
+R16.A,CoercedToContinueWork,I,1.8,Y,Null unless R16.1 or R16.2 = 1
+R16.B,LaborExploitPastThreeMonths,I,1.8,Y,Null unless R16.1 or R16.2 = 1
+R18.1,CounselingReceived,I,1.7,Y,
+R18.A,IndividualCounseling,I,1.7,Y,Null unless R18.1 = 1
+R18.A,FamilyCounseling,I,1.7,Y,Null unless R18.1 = 1
+R18.A,GroupCounseling,I,1.7,Y,Null unless R18.1 = 1
+R18.B,SessionCountAtExit,I,,Y,Null unless R18.1 = 1
+R18.3,PostExitCounselingPlan,I,1.7,Y,
+R18.2,SessionsInPlan,I,,Y,Integer >0
+R19.1,DestinationSafeClient,I,1.8,Y,
+R19.2,DestinationSafeWorker,I,R19.A,Y,
+R19.3,PosAdultConnections,I,R19.A,Y,
+R19.4,PosPeerConnections,I,R19.A,Y,
+R19.5,PosCommunityConnections,I,R19.A,Y,
+R20.1,AftercareDate,D,,Y,Null unless date is between
+R20.2,AftercareProvided,I,R20.2,Y,Null unless AftercareDate is
+R20.A,EmailSocialMedia,I,1.7,Y,Null unless R20.2 = 1
+R20.A,Telephone,I,1.7,Y,Null unless R20.2 = 1
+R20.A,InPersonIndividual,I,1.7,Y,Null unless R20.2 = 1
+R20.A,InPersonGroup,I,1.7,Y,Null unless R20.2 = 1
+V9.1,CMExitReason,I,V9.1,Y,
+,DateCreated,T,,,
+,DateUpdated,T,,,
+,UserID,S32,,,
+,DateDeleted,T,,Y,
+,ExportID,S32,,,Must match ExportID in Export.csv

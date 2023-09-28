@@ -1,0 +1,13 @@
+"Name","DE#","Type","List","Null","Notes"
+"AffiliationID","","S32","","","Unique identifier"
+"ProjectID","","S32","","","Must match a ProjectID in Project.csv where
+(ProjectType = 6) or (ProjectType = 13 and
+RRHSubType = 1)"
+"ResProjectID","2.02.B","S32","","","Must match a record in Project.csv where
+ProjectType = 1,2, 3, 8, 10, or 13. If ProjectType =
+13, RRHSubType must be 2."
+"DateCreated","","T","","",""
+"DateUpdated","","T","","",""
+"UserID","","S32","","",""
+"DateDeleted","","T","","Y",""
+"ExportID","","S","","","Must match the ExportID in Export.csv"

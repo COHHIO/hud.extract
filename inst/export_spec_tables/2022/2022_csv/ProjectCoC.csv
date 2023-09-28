@@ -1,0 +1,16 @@
+DE.,Name,Type,List,Null,Notes
+,ProjectCoCID,S32,,,Unique identifier
+,ProjectID,S32,,,Must match a ProjectID in Project.csv
+2.03.1,CoCCode,S6,,,"Two letters, a dash, and 3 numbers"
+2.03.2,Geocode,S6,,,Limited to six digits
+2.03.3,Address1,S100,,Y,
+2.03.4,Address2,S100,,Y,
+2.03.5,City,S50,,Y,
+2.03.6,State,S2,,Y,Limited to two letters4
+2.03.7,ZIP,S5,,Y,Limited to five digits
+2.03.8,GeographyType,I,2.03.4,Y,
+,DateCreated,T,,,
+,DateUpdated,T,,,
+,UserID,S32,,,
+,DateDeleted,T,,Y,
+,ExportID,S32,,,Must match the ExportID in Export.csv

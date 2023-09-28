@@ -1,0 +1,14 @@
+DE.,Name,Type,List,Null,Notes
+,AssessmentID,S32,,,Unique identifier
+,EnrollmentID,S32,,,
+,PersonalID,S32,,,
+4.19.1,AssessmentDate,D,,,
+4.19.2,AssessmentLocation,S250,,,
+4.19.3,AssessmentType,I,4.19.3,,
+4.19.4,AssessmentLevel,I,4.19.4,,
+4.19.7,PrioritizationStatus,I,4.19.7,,
+,DateCreated,T,,,
+,DateUpdated,T,,,
+,UserID,S32,,,
+,DateDeleted,T,,Y,
+,ExportID,S32,,,Must match ExportID  in Export.csv

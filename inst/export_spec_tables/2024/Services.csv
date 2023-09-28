@@ -1,0 +1,38 @@
+"Name","DE#","Type","List","Null","Notes"
+"ServicesID","","S32","","","Unique identifier"
+"EnrollmentID","","S32","","",""
+"PersonalID","","S32","","",""
+"DateProvided","","D","","",""
+"RecordType","","I","1.4","",""
+"TypeProvided","","I","(see","","For RecordType
+• 141 – list P1.2
+• 142 – list R14.2
+• 143 – list W1.2
+• 144 – list V2.2
+• 151 – list W2.2
+• 152 – list V3.3
+• 161 – list P2.2
+• 200 – list 4.14
+• 210 – list V8.2
+300 – list C2.2"
+"OtherTypeProvided","V2.D","S50","","Y","Null unless RecordType = 144 and
+TypeProvided = 6
+Or RecordType = 210 and
+TypeProvided = 12"
+"MovingOnOtherType","C2.A","S50","","Y","Null unless RecordType = 300 and
+TypeProvided = 5"
+"SubTypeProvided","V2.A","I","(see","Y","Null unless RecordType = 144 and
+TypeProvided = 3, 4, or 5.
+For TypeProvided:
+• 3 – list V2.A
+• 4 – list V2.B
+• 5 – list V2.C"
+"FAAmount","W2","M","","Y","Null unless RecordType = 151 or 152"
+"FAStartDate","V3.1","D","","Y",""
+"FAEndDate","V3.4","D","","Y",""
+"ReferralOutcome","P2","I","P2.A","Y","Null unless RecordType = 161"
+"DateCreated","","T","","",""
+"DateUpdated","","T","","",""
+"UserID","","S32","","",""
+"DateDeleted","","T","","Y",""
+"ExportID","","S32","","","Must match ExportID in Export.csv"

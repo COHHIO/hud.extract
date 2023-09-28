@@ -1,0 +1,11 @@
+"Name","DE#","Type","List","Null","Notes"
+"AssessmentQuestionID","","S32","","","Unique identifier"
+"AssessmentID","","S32","","",""
+"EnrollmentID","","S32","","",""
+"PersonalID","","S32","","",""
+"AssessmentQuestionGroup","","S250","","Y","Locally determined"
+"AssessmentQuestionOrder","","I","","Y","Locally determined
+is populated
+Y   Locally determined
+Y
+Must match ExportID  in Export.csv"

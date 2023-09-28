@@ -1,0 +1,16 @@
+DE.,Name,Type,List,Null,Notes
+,EventID,S32,,,Unique identifier
+,EnrollmentID,S32,,,
+,PersonalID,S32,,,
+4.20.1,EventDate,D,,,
+4.20.2,Event,I,4.20.2,,
+4.20.A,ProbSolDivRRResult,I,1.7,Y,
+4.20.B,ReferralCaseManageAfter,I,1.7,Y,
+4.20.C,LocationCrisisOrPHHousing,S250,,Y,
+4.20.D,ReferralResult,I,4.20.D,Y,
+4.20.E,ResultDate,D,,Y,Null unless ReferralResult not
+,DateCreated,T,,,
+,DateUpdated,T,,,
+,UserID,S32,,,
+,DateDeleted,T,,Y,
+,ExportID,S32,,,Must match ExportID  in Expo

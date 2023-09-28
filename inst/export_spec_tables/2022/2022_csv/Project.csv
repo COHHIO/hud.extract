@@ -1,0 +1,21 @@
+DE.,Name,Type,List,Null,Notes
+2.02.1,ProjectID,S32,,,Unique identifier
+,OrganizationID,S32,,,Must match a record in
+2.02.2,ProjectName,S100,,,
+,ProjectCommonName,S50,,Y,
+2.02.3,OperatingStartDate,D,,,
+2.02.4,OperatingEndDate,D,,Y,
+2.02.5,ContinuumProject,I,1.7,,
+2.02.6,ProjectType,I,2.02.6,Y,May be null if ContinuumProject <>
+2.02.D,HousingType,I,2.02.D,Y,
+2.02.A,ResidentialAffiliation,I,1.7,Y,Null if ProjectType <> 6
+2.02.C,TrackingMethod,I,2.02.C,Y,Null if ProjectType <> 1
+2.02.7,HMISParticipatingProject,I,1.7,,
+2.02.8,TargetPopulation,I,2.02.8,Y,
+2.02.9,HOPWAMedAssistedLivingFac,I,2.02.9,Y,
+,PITCount,I,,Y,Used for the HIC; a count of active
+,DateCreated,T,,,
+,DateUpdated,T,,,
+,UserID,S32,,,
+,DateDeleted,T,,Y,
+,ExportID,S32,,,Must match ExportID in Export.csv

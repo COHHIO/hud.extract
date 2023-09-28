@@ -1,0 +1,23 @@
+DE.,Name,Type,List,Null,Notes
+,HealthAndDVID,S32,,,Unique identifier
+,EnrollmentID,S32,,,
+,PersonalID,S32,,,
+4.11.1,InformationDate,D,,,
+4.11.2,DomesticViolenceVictim,I,1.8,Y,
+4.11.A,WhenOccurred,I,4.11.A,Y,Null unless 4.11.2 = 1
+4.11.B,CurrentlyFleeing,I,1.8,Y,Null unless 4.11.2 = 1
+R7.1,GeneralHealthStatus,I,R7.1,Y,
+R8.1,DentalHealthStatus,I,R7.1,Y,
+R9.1,MentalHealthStatus,I,R7.1,Y,
+R10.1,PregnancyStatus,I,1.8,Y,
+R10.A,DueDate,D,,Y,Null unless R10.1 = 1
+C1.2,LifeValue,I,C1.1,Y,
+C1.3,SupportFromOthers,I,C1.1,Y,
+C1.4,BounceBack,I,C1.1,Y,
+C1.5,FeelingFrequency,I,C1.2,Y,
+,DataCollectionStage,I,5.03.1,,
+,DateCreated,T,,,
+,DateUpdated,T,,,
+,UserID,S32,,,
+,DateDeleted,T,,Y,
+,ExportID,S32,,,Must match ExportID in Export.csv

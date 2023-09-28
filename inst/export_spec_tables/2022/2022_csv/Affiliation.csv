@@ -1,0 +1,9 @@
+DE.,Name,Type,Null,Notes
+,AffiliationID,S32,,Unique identifier
+,ProjectID,S32,,Must match a ProjectID in Project.csv where
+2.02.B,ResProjectID,S32,,Must match a record in Project.csv where
+,DateCreated,T,,
+,DateUpdated,T,,
+,UserID,S32,,
+,DateDeleted,T,Y,
+,ExportID,S,,Must match the ExportID in Export.csv

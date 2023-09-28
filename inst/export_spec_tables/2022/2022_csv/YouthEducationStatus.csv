@@ -1,0 +1,14 @@
+DE.,Name,Type,List,Null,Notes
+,YouthEducationStatusID,S32,,,Unique identifier
+,EnrollmentID,S32,,,
+,PersonalID,S32,,,
+C3.1,InformationDate,D,,,
+C3.2,CurrentSchoolAttend,I,C3.2,Y,
+C3.A,MostRecentEdStatus,I,C3.A,Y,Null unless C3.2 = 0
+C3.B,CurrentEdStatus,I,C3.B,Y,Null unless C3.2 = 1 or C3.2 = 2
+,DataCollectionStage,I,5.03.1,,
+,DateCreated,T,,,
+,DateUpdated,T,,,
+,UserID,S32,,,
+,DateDeleted,T,,Y,
+,ExportID,S32,,,Must match ExportID  in Export.csv

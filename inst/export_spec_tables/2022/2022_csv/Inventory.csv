@@ -1,0 +1,23 @@
+DE.,Name,Type,List,Null,Notes
+,InventoryID,S32,,,Unique identifier
+,ProjectID,S32,,,Must match a ProjectID
+2.07.3,CoCCode,S6,,,Must match a CoCCode
+2.07.4,HouseholdType,I,2.07.4,,
+2.07.6,Availability,I,2.07.6,Y,Null unless Project.csv
+2.07.15,UnitInventory,I,,,
+2.07.14,BedInventory,I,,,
+2.07.7,CHVetBedInventory,I,,Y,
+2.07.8,YouthVetBedInventory,I,,Y,
+2.07.9,VetBedInventory,I,,Y,
+2.07.10,CHYouthBedInventory,I,,Y,
+2.07.11,YouthBedInventory,I,,Y,
+2.07.12,CHBedInventory,I,,Y,
+2.07.13,OtherBedInventory,I,,Y,
+2.07.5,ESBedType,I,2.07.5,Y,Null unless Project.csv
+2.07.1,InventoryStartDate,D,,,
+2.07.2,InventoryEndDate,D,,Y,
+,DateCreated,T,,,
+,DateUpdated,T,,,
+,UserID,S32,,,
+,DateDeleted,T,,Y,
+NA,ExportID,S32,NA,NA,NA

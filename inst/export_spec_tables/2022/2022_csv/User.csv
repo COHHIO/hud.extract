@@ -1,0 +1,11 @@
+DE.,Name,Type,Null,Notes
+5.07,UserID,S32,,Unique Identifier
+,UserFirstName,S50,Y,The first name of the user if
+,UserLastName,S50,Y,The last name of the user if
+,UserPhone,S10,Y,The phone number of the user if
+,UserExtension,S5,Y,"The phone extension of the user, if"
+,UserEmail,S320,Y,"The email address of the user, if"
+,DateCreated,T,,
+,DateUpdated,T,,
+,DateDeleted,T,Y,
+,ExportID,S32,,Must match record in Export.csv

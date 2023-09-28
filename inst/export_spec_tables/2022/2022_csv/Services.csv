@@ -1,0 +1,17 @@
+DE.,Name,Type,List,Null,Notes
+,ServicesID,S32,,,Unique identifier
+,EnrollmentID,S32,,,
+,PersonalID,S32,,,
+,DateProvided,D,,,
+,RecordType,I,1.4,,
+,TypeProvided,I,(see,,For RecordType
+V2,OtherTypeProvided,S50,,Y,Null unless RecordType = 144 and
+C2.A,MovingOnOtherType,S50,,Y,Null unless RecordType = 300 and
+V2,SubTypeProvided,I,(see,Y,Null unless RecordType = 144 and
+W2&,FAAmount,M,,Y,Null unless RecordType = 151 or 152
+P2,ReferralOutcome,I,P2.A,Y,Null unless RecordType = 161
+,DateCreated,T,,,
+,DateUpdated,T,,,
+,UserID,S32,,,
+,DateDeleted,T,,Y,
+,ExportID,S32,,,Must match ExportID  in Export.csv

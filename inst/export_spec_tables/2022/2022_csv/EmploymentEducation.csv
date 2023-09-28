@@ -1,0 +1,16 @@
+DE.,Name,Type,List,Null,Notes
+,EmploymentEducationID,S32,,,Unique identifier
+,EnrollmentID,S32,,,
+,PersonalID,S32,,,
+R6.1,InformationDate,D,,,
+R4.1,LastGradeCompleted,I,R4.1,Y,
+R5.1,SchoolStatus,I,R5.1,Y,
+R6.2,Employed,I,1.8,Y,
+R6.A,EmploymentType,I,R6.A,Y,Null unless R6.2 = 1
+R6.B,NotEmployedReason,I,R6.B,Y,Null unless R6.2 = 0
+,DataCollectionStage,I,5.03.1,,
+,DateCreated,T,,,
+,DateUpdated,T,,,
+,UserID,S32,,,
+,DateDeleted,T,,Y,
+,ExportID,S32,,,Must match record in Export.csv
