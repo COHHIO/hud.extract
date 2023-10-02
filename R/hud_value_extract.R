@@ -34,8 +34,7 @@ hud_value_tables <- function(pdf = hud_spec_2024, dims = hud_dimensions(hud_spec
   titles <- dplyr::filter(appendix, font_size == title_size) |>
     dplyr::group_by(pg, y) |>
     dplyr::summarise(titles = paste0(text, collapse = " "), .groups = "keep") |>
-    dplyr::filter(stringr::str_detect(titles, "^Notes$", negate = TRUE)) |>
-    dplyr::filter(titles != "3.12.1 Living Situation Option List")
+    dplyr::filter(stringr::str_detect(titles, "^Notes$", negate = TRUE))
 
 
   value_tables <- slider::slide(titles, .before = 1L, .complete = TRUE, ~{
@@ -59,10 +58,29 @@ hud_value_tables <- function(pdf = hud_spec_2024, dims = hud_dimensions(hud_spec
     } else {
       area <- list(c(y_min = rows$y[1], x_min = dims$x_min, y_max = rows$y[2], x_max = dims$x_max))
     }
+    if (rows$titles[1] != "3.12.1 Living Situation Option List" ) {
+      raw_table <- do.call(rbind, tabulizer::extract_tables(file = pdf,
+                                                            pages = pgs, area = area))
 
-    raw_table <- do.call(rbind, tabulizer::extract_tables(file = pdf,
-                                             pages = pgs, area = area))
-    title_row <- which(stringr::str_detect(raw_table[,1], "^Value"))
+      title_row <- which(stringr::str_detect(raw_table[,1], "^Value"))
+    } else {
+      raw_table <- do.call(rbind, tabulizer::extract_areas(file = pdf,
+                                                            pages = pgs))
+      # Create a new title row
+      title_row_values <- matrix(c("Value", "Text", "Prior Living Situation (3.917)",
+                         "Current Living Situation (4.12)",
+                         "Destination (3.12)"), nrow = 1)
+
+      # Append new title row
+      raw_table <- rbind(title_row_values, raw_table)
+
+      # Remove old title rows (2 to 4) from the original matrix
+      raw_table <- raw_table[-c(2:4), ]
+
+      title_row <- which(stringr::str_detect(raw_table[,1], "^Value"))
+    }
+
+
     if (UU::is_legit(title_row)) {
       row_rm <- purrr::when(title_row,
                   . > 1 ~ 1:title_row,
